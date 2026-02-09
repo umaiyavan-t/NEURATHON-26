@@ -4,6 +4,9 @@ from supabase import create_client, Client
 import os
 from pydantic import BaseModel
 from typing import List, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -15,8 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SUPABASE_URL = os.getenv("SUPABASE_URL", "your_supabase_url")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "your_supabase_key")
+SUPABASE_URL : str = os.getenv("SUPABASE_URL")
+SUPABASE_KEY : str = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 class User(BaseModel):
