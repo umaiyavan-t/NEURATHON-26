@@ -1,0 +1,42 @@
+[
+    {
+        "id": "notif_1770701907_nt_5",
+        "user_id": "user_client_5",
+        "title": "Agreement Signed",
+        "message": "The Freelancer has signed the contract for job 'job_2'.",
+        "type": "proposal",
+        "link": "contract_job_2_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 11:01:01.942921"
+    },
+    {
+        "id": "notif_1770702109_er_2",
+        "user_id": "user_freelancer_2",
+        "title": "New Message",
+        "message": "Client_5_Corp: hi...",
+        "type": "message",
+        "link": "contract_job_2_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 11:01:01.942921"
+    },
+    {
+        "id": "notif_1770702224_er_2",
+        "user_id": "user_freelancer_2",
+        "title": "New Message",
+        "message": "Client_5_Corp: hi...",
+        "type": "message",
+        "link": "contract_job_2_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 11:01:01.942921"
+    },
+    {
+        "id": "notif_1770702604_er_2",
+        "user_id": "user_freelancer_2",
+        "title": "Payment Released! \ud83c\udf89",
+        "message": "\u20b92500.0 has been released to your account (Late by 3 days. Suggested payout: \u20b92125.0).",
+        "type": "deadline",
+        "link": "contract_demo_failing",
+        "read": false,
+        "created_at": "2026-02-10 11:14:39.320948"
+    }
+]

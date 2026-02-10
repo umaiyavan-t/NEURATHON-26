@@ -1,0 +1,186 @@
+[
+    {
+        "id": "job_1",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "Build AI Chatbot",
+        "description": "Build AI Chatbot required for Sanjay. Project focuses on Python, AI, FastAPI. Please include language fit for Hindi.",
+        "required_skills": [
+            "Python",
+            "AI",
+            "FastAPI"
+        ],
+        "budget": 5645,
+        "timeline": "2 weeks",
+        "language": "Hindi",
+        "region": "India",
+        "experience_required": "Entry",
+        "duration": "2 months",
+        "created_at": "2026-02-10 09:46:39.062862",
+        "status": "completed"
+    },
+    {
+        "id": "job_2",
+        "client_id": "user_client_5",
+        "title": "React Dashboard",
+        "description": "React Dashboard required for Client_5_Corp. Project focuses on React, FastAPI, PostgreSQL. Please include language fit for Kannada.",
+        "required_skills": [
+            "React",
+            "FastAPI",
+            "PostgreSQL"
+        ],
+        "budget": 29181,
+        "timeline": "3 weeks",
+        "language": "Kannada",
+        "region": "Gujarat",
+        "experience_required": "Expert",
+        "duration": "1 months",
+        "created_at": "2026-02-10 09:46:39.062891",
+        "status": "in_progress"
+    },
+    {
+        "id": "job_3",
+        "client_id": "user_client_9",
+        "title": "Logo Design",
+        "description": "Logo Design required for Client_9_Corp. Project focuses on Graphic Design, Figma. Please include language fit for Malayalam.",
+        "required_skills": [
+            "Graphic Design",
+            "Figma"
+        ],
+        "budget": 19335,
+        "timeline": "4 weeks",
+        "language": "Malayalam",
+        "region": "Kerala",
+        "experience_required": "Expert",
+        "duration": "5 months",
+        "created_at": "2026-02-10 09:46:39.062897",
+        "status": "open"
+    },
+    {
+        "id": "job_4",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "Blockchain Integration",
+        "description": "Blockchain Integration required for Sanjay. Project focuses on Blockchain, Node.js. Please include language fit for Marathi.",
+        "required_skills": [
+            "Blockchain",
+            "Node.js"
+        ],
+        "budget": 65900,
+        "timeline": "10 weeks",
+        "language": "Marathi",
+        "region": "India",
+        "experience_required": "Intermediate",
+        "duration": "4 months",
+        "created_at": "2026-02-10 09:46:39.062902",
+        "status": "open"
+    },
+    {
+        "id": "job_5",
+        "client_id": "user_client_9",
+        "title": "Cloud Infrastructure",
+        "description": "Cloud Infrastructure required for Client_9_Corp. Project focuses on AWS, Docker, Terraform. Please include language fit for Telugu.",
+        "required_skills": [
+            "AWS",
+            "Docker",
+            "Terraform"
+        ],
+        "budget": 14931,
+        "timeline": "3 weeks",
+        "language": "Telugu",
+        "region": "Kerala",
+        "experience_required": "Entry",
+        "duration": "6 months",
+        "created_at": "2026-02-10 09:46:39.062907",
+        "status": "open"
+    },
+    {
+        "id": "job_6",
+        "client_id": "user_client_1",
+        "title": "Mobile App UI",
+        "description": "Mobile App UI required for Client_1_Corp. Project focuses on Figma, Responsive Design. Please include language fit for English.",
+        "required_skills": [
+            "Figma",
+            "Responsive Design"
+        ],
+        "budget": 96768,
+        "timeline": "9 weeks",
+        "language": "English",
+        "region": "Maharashtra",
+        "experience_required": "Intermediate",
+        "duration": "1 months",
+        "created_at": "2026-02-10 09:46:39.062912",
+        "status": "open"
+    },
+    {
+        "id": "job_7",
+        "client_id": "user_client_8",
+        "title": "Python Data Scraper",
+        "description": "Python Data Scraper required for Client_8_Corp. Project focuses on Python, BeautifulSoup, Selenium. Please include language fit for Kannada.",
+        "required_skills": [
+            "Python",
+            "BeautifulSoup",
+            "Selenium"
+        ],
+        "budget": 31768,
+        "timeline": "9 weeks",
+        "language": "Kannada",
+        "region": "Rajasthan",
+        "experience_required": "Entry",
+        "duration": "6 months",
+        "created_at": "2026-02-10 09:46:39.062916",
+        "status": "open"
+    },
+    {
+        "id": "job_8",
+        "client_id": "user_client_5",
+        "title": "E-commerce Frontend",
+        "description": "E-commerce Frontend required for Client_5_Corp. Project focuses on Vue.js, CSS. Please include language fit for Gujarati.",
+        "required_skills": [
+            "Vue.js",
+            "CSS"
+        ],
+        "budget": 63807,
+        "timeline": "10 weeks",
+        "language": "Gujarati",
+        "region": "Gujarat",
+        "experience_required": "Expert",
+        "duration": "2 months",
+        "created_at": "2026-02-10 09:46:39.062921",
+        "status": "open"
+    },
+    {
+        "id": "job_9",
+        "client_id": "user_client_7",
+        "title": "Spring Boot Backend",
+        "description": "Spring Boot Backend required for Client_7_Corp. Project focuses on Spring Boot, PostgreSQL. Please include language fit for Punjabi.",
+        "required_skills": [
+            "Spring Boot",
+            "PostgreSQL"
+        ],
+        "budget": 36284,
+        "timeline": "4 weeks",
+        "language": "Punjabi",
+        "region": "Karnataka",
+        "experience_required": "Entry",
+        "duration": "1 months",
+        "created_at": "2026-02-10 09:46:39.062925",
+        "status": "open"
+    },
+    {
+        "id": "job_10",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "Cybersecurity Audit",
+        "description": "Cybersecurity Audit required for Sanjay. Project focuses on Cybersecurity, Docker. Please include language fit for Malayalam.",
+        "required_skills": [
+            "Cybersecurity",
+            "Docker"
+        ],
+        "budget": 63490,
+        "timeline": "10 weeks",
+        "language": "Malayalam",
+        "region": "India",
+        "experience_required": "Entry",
+        "duration": "5 months",
+        "created_at": "2026-02-10 09:46:39.062930",
+        "status": "open"
+    }
+]

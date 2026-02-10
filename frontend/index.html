@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkLance | Premium Freelance Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="hidden">
+        <div class="auth-logo flex-between" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="font-size: 1.5rem;">WorkLance</h1>
+            <button onclick="app.toggleDarkMode()" class="btn-icon" id="dark-mode-toggle" title="Toggle Theme">
+                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="user-info" class="text-sm font-semibold mb-2" style="padding: 0 1rem;"></div>
+
+
+        <nav class="nav-menu">
+            <div class="relative">
+                <a href="#" onclick="app.toggleNotifications(); return false;" class="nav-link" id="nav-notifications">
+                    <div class="relative">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span id="notif-badge"
+                            class="hidden absolute -top-2 -right-2 bg-primary text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-secondary">0</span>
+                    </div>
+                    Notifications
+                </a>
+                <div id="notif-tray"
+                    class="hidden absolute left-0 top-full mt-1 w-72 max-h-96 overflow-y-auto z-50 card shadow-xl p-0 animate-slide-up">
+                    <div class="p-3 border-b flex-between sticky top-0 bg-card z-10">
+                        <h4 class="font-bold text-sm">Alerts</h4>
+                        <button onclick="app.clearNotifications()" class="text-xs text-primary font-bold">Clear
+                            All</button>
+                    </div>
+                    <div id="notif-list">
+                        <p class="text-muted p-4 text-center text-sm">No new alerts.</p>
+                    </div>
+                </div>
+            </div>
+            <a href="#" onclick="app.showDashboard()" class="nav-link active" id="nav-dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Dashboard
+            </a>
+            <a href="#" onclick="app.showProfile()" class="nav-link" id="nav-profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                My Profile
+            </a>
+            <a href="#" onclick="app.showContracts()" class="nav-link" id="nav-contracts">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Agreements
+            </a>
+            <div id="trust-score-container" class="mt-6 hidden" style="padding: 0 1rem;">
+                <p class="text-xs text-muted font-semibold uppercase tracking-wider">Trust Score</p>
+                <div class="flex items-center gap-2 mt-2">
+                    <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--success);"></div>
+                    <span id="trust-score-display" class="font-semibold text-lg">50</span>
+                </div>
+            </div>
+        </nav>
+
+        <div style="margin-top: auto; padding: 1rem 0;">
+            <a href="#" onclick="app.logout()" class="nav-link" style="color: var(--error);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-no-sidebar">
+
+        <!-- 1. Auth View -->
+        <div id="auth-view" class="auth-container">
+            <div class="auth-logo">
+                <h1>WorkLance</h1>
+                <p class="text-muted">India's Fair Pricing Freelance Hub</p>
+            </div>
+            <!-- Login Card -->
+            <div id="login-card" class="card">
+                <h2 class="mb-4">Welcome back</h2>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" required placeholder="sanjay@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-2">Sign In</button>
+                </form>
+                <p class="mt-6 text-sm text-center">New here? <a href="#" onclick="app.toggleAuth('register')"
+                        style="color: var(--primary); font-weight: 600;">Create an account</a></p>
+            </div>
+            <!-- Register Card -->
+            <div id="register-card" class="card hidden">
+                <h2 class="mb-4">Get Started</h2>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" required placeholder="Sanjay Kumar">
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" required placeholder="sanjay@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" required placeholder="Min 8 characters">
+                    </div>
+                    <div class="input-group">
+                        <label>I want to...</label>
+                        <select id="reg-role" onchange="app.toggleSkillsInput()">
+                            <option value="client">Hire Talent (Client)</option>
+                            <option value="freelancer">Find Work (Freelancer)</option>
+                        </select>
+                    </div>
+                    <div id="freelancer-fields" class="hidden">
+                        <div class="input-group">
+                            <label>Skills <span class="text-muted">(comma separated)</span></label>
+                            <input type="text" id="reg-skills" placeholder="Python, Web Scraping, FastAPI">
+                        </div>
+                        <div class="input-group">
+                            <label>Min Hourly Rate (₹)</label>
+                            <input type="number" id="reg-rate" placeholder="500">
+                        </div>
+                        <div class="input-group">
+                            <label>Region (State)</label>
+                            <input type="text" id="reg-region" placeholder="Karnataka">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-2">Create Account</button>
+                </form>
+                <p class="mt-6 text-sm text-center">Already signed up? <a href="#" onclick="app.toggleAuth('login')"
+                        style="color: var(--primary); font-weight: 600;">Sign in here</a></p>
+            </div>
+        </div>
+
+        <!-- 2. Onboarding View -->
+        <div id="onboarding-view" class="hidden" style="max-width: 600px; text-align: center;">
+            <div class="card p-6">
+                <div id="onboarding-client" class="hidden">
+                    <h2 class="mb-2">Welcome to WorkLance, Client!</h2>
+                    <p class="text-muted mb-6">Let's get your first project started. Posting a job takes less than 2
+                        minutes.</p>
+                    <button onclick="app.showPostJob()" class="btn btn-primary">Post Your First Job</button>
+                </div>
+                <div id="onboarding-freelancer" class="hidden">
+                    <h2 class="mb-2">Welcome to WorkLance, Pro!</h2>
+                    <p class="text-muted mb-6">Your profile is active. You'll start seeing matched jobs based on your
+                        skills automatically.</p>
+                    <button onclick="app.showDashboard()" class="btn btn-primary">Go to Dashboard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Client Dashboard -->
+        <div id="client-dashboard" class="hidden w-full">
+            <div class="flex-between mb-8">
+                <div>
+                    <h2 style="font-size: 1.875rem;">Client Overview</h2>
+                    <p class="text-muted">Manage your job postings and active projects</p>
+                </div>
+                <button onclick="app.showPostJob()" class="btn btn-primary">+ Post New Job</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Active Projects</h4>
+                    <div class="value" id="stat-active-contracts">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Open Jobs</h4>
+                    <div class="value" id="stat-active-jobs">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Escrow Funds</h4>
+                    <div class="value" id="stat-escrow-amount">₹0</div>
+                </div>
+            </div>
+
+            <h3 class="mb-4">Active Projects</h3>
+            <div id="client-active-projects" class="flex flex-col gap-4 mb-8"></div>
+
+            <h3 class="mb-4">Open Job Postings</h3>
+            <div id="client-jobs-list" class="flex flex-col gap-4"></div>
+        </div>
+
+        <!-- 4. Freelancer Dashboard -->
+        <div id="freelancer-dashboard" class="hidden w-full">
+            <div class="flex-between mb-8">
+                <div>
+                    <h2 style="font-size: 1.875rem;">Freelancer Hub</h2>
+                    <p class="text-muted">Curated jobs matched by AI specifically for your profile</p>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="job-search-input" placeholder="Search Python, Web..."
+                        style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <button onclick="app.handleSearch()" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+
+            <h3 class="mb-4">Your Active Projects</h3>
+            <div id="freelancer-active-projects" class="flex flex-col gap-4 mb-8"></div>
+
+            <h3 class="mb-4">Your Applied Jobs</h3>
+            <div id="freelancer-proposals-list" class="flex flex-col gap-4 mb-8"></div>
+
+            <h3 class="mb-4">AI Recommended Jobs</h3>
+            <div id="freelancer-jobs-list" class="flex flex-col gap-4"></div>
+        </div>
+
+        <!-- 5. Profile View -->
+        <div id="profile-view" class="hidden w-full" style="max-width: 800px;">
+            <div class="card p-6">
+                <h2 class="mb-6">Edit My Profile</h2>
+                <form id="profile-form">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="prof-name" required>
+                    </div>
+                    <div class="input-group" id="prof-bio-group">
+                        <label>Professional Bio / Company Info</label>
+                        <textarea id="prof-bio" rows="4"></textarea>
+                    </div>
+                    <div class="stats-grid" style="margin-bottom: 0;">
+                        <div class="input-group">
+                            <label>Languages Spoken</label>
+                            <div id="prof-lang-container" class="flex flex-wrap gap-4 p-4 bg-main rounded-lg">
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="English"> English
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Hindi"> Hindi
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Marathi"> Marathi
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Tamil"> Tamil
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Telugu"> Telugu
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Bengali"> Bengali
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="prof-lang" value="Kannada"> Kannada
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Region (State)</label>
+                            <input type="text" id="prof-region" placeholder="e.g., Karnataka">
+                        </div>
+                    </div>
+                    <div id="prof-freelancer-fields">
+                        <div class="input-group">
+                            <label>Skills (comma separated)</label>
+                            <input type="text" id="prof-skills">
+                        </div>
+                        <div class="input-group">
+                            <label>Min Hourly Rate (₹)</label>
+                            <input type="number" id="prof-rate">
+                        </div>
+                        <div class="stats-grid" style="margin-bottom: 0;">
+                            <div class="input-group">
+                                <label>GitHub Profile</label>
+                                <input type="url" id="prof-github" placeholder="https://github.com/..." class="text-sm">
+                            </div>
+                            <div class="input-group">
+                                <label>LinkedIn Profile</label>
+                                <input type="url" id="prof-linkedin" placeholder="https://linkedin.com/in/..."
+                                    class="text-sm">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Portfolio / Website</label>
+                            <input type="url" id="prof-portfolio" placeholder="https://..." class="text-sm">
+                        </div>
+                        <div class="input-group mt-4 p-4 bg-main" style="border-radius: 8px;">
+                            <label class="font-bold mb-2">Resume / CV (PDF)</label>
+                            <div class="flex gap-4 items-center">
+                                <input type="file" id="resume-upload" accept=".pdf" class="text-sm">
+                                <a id="resume-view-link" href="#" target="_blank"
+                                    class="btn btn-secondary text-xs hidden">📄 View Current Resume</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-6">
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                        <button type="button" onclick="app.showDashboard()" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 6. Post Job View -->
+        <div id="post-job-view" class="hidden w-full" style="max-width: 800px;">
+            <div class="card p-6">
+                <h2 class="mb-6">What project are you hiring for?</h2>
+                <form id="post-job-form">
+                    <div class="input-group">
+                        <label>Job Title</label>
+                        <input type="text" id="job-title" required placeholder="e.g. Build a Python Scraping Bot">
+                    </div>
+                    <div class="input-group">
+                        <label>Detailed Description</label>
+                        <textarea id="job-desc" rows="6" required placeholder="Explain the project scope..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Skills Needed</label>
+                        <input type="text" id="job-skills-input" required placeholder="Python, BeautifulSoup">
+                    </div>
+                    <div class="flex-between gap-4">
+                        <div class="input-group" style="flex:1">
+                            <label>Budget (₹)</label>
+                            <input type="number" id="job-budget" required>
+                        </div>
+                        <div class="input-group" style="padding-top: 1.5rem;">
+                            <button type="button" onclick="app.handleEstimateCost()" class="btn btn-secondary">AI Cost
+                                Estimate</button>
+                        </div>
+                    </div>
+                    <div class="stats-grid" style="margin-bottom: 0;">
+                        <div class="input-group">
+                            <label>Preferred Project Languages</label>
+                            <div id="job-lang-container" class="flex flex-wrap gap-4 p-4 bg-main rounded-lg">
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="job-lang" value="English" checked> English
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="job-lang" value="Hindi"> Hindi
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="job-lang" value="Marathi"> Marathi
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="job-lang" value="Tamil"> Tamil
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" name="job-lang" value="Telugu"> Telugu
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Region Preferred</label>
+                            <input type="text" id="job-region" value="India">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Publish Project</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 7. Job Details View -->
+        <div id="job-details-view" class="hidden w-full">
+            <div class="card p-6 mb-6">
+                <div class="flex-between">
+                    <h1 id="view-job-title" style="font-size: 2rem;">Job Title</h1>
+                    <span id="view-job-status" class="badge">Open</span>
+                </div>
+                <p id="view-job-desc" class="mt-4" style="font-size: 1.125rem; color: var(--text-main);"></p>
+                <div class="flex gap-6 mt-8 p-4 bg-main" style="border-radius: 8px;">
+                    <div>
+                        <p class="text-xs text-muted uppercase font-bold">Budget</p>
+                        <p id="view-job-budget" class="font-bold text-lg">₹0</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-muted uppercase font-bold">Region</p>
+                        <p id="view-job-region" class="font-bold text-lg">India</p>
+                    </div>
+                </div>
+            </div>
+            <div id="client-proposals-section" class="hidden">
+                <h3 class="mb-4">Interested Freelancers</h3>
+                <div id="proposals-list" class="flex flex-col gap-4"></div>
+            </div>
+
+            <!-- AI Recommended Talent for Clients -->
+            <div id="recommended-talent-section" class="hidden mt-12">
+                <div class="flex-between mb-4">
+                    <h3 class="font-bold text-xl">✨ AI Curated Talent</h3>
+                    <span class="text-xs font-bold py-1 px-3 bg-primary text-white" style="border-radius: 20px;">TOP
+                        MATCHES</span>
+                </div>
+                <p class="text-sm text-muted mb-6">These experts haven't applied yet but perfectly match your
+                    requirements.</p>
+                <div id="recommended-talent-list" class="flex flex-col gap-4"></div>
+            </div>
+            <div id="freelancer-proposal-section" class="hidden">
+                <div class="card">
+                    <h3>Submit Your Proposal</h3>
+                    <form id="proposal-form" class="mt-4">
+                        <div class="stats-grid" style="margin-bottom: 0;">
+                            <div class="input-group"><label>Your Price (₹)</label><input type="number" id="prop-price"
+                                    required>
+                                <p id="price-warning" class="text-xs text-error mt-1 hidden">Min ₹<span>0</span></p>
+                            </div>
+                            <div class="input-group"><label>Delivery Time</label><input type="text" id="prop-timeline"
+                                    required placeholder="e.g. 3 days"></div>
+                        </div>
+                        <div class="input-group"><label>How will you help?</label><textarea id="prop-msg" rows="4"
+                                required></textarea></div>
+                        <button type="submit" class="btn btn-primary">Send Proposal</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7b. Agreements List View -->
+        <div id="agreements-list-view" class="hidden w-full">
+            <div class="flex-between mb-8">
+                <div>
+                    <h2 style="font-size: 1.875rem;">My Agreements</h2>
+                    <p class="text-muted">Review and manage your active and past contracts</p>
+                </div>
+            </div>
+            <div id="agreements-list" class="flex flex-col gap-4"></div>
+        </div>
+
+        <!-- 8. Contract & Payment View -->
+        <div id="contract-view" class="hidden w-full" style="max-width: 900px;">
+            <div class="card" style="padding: 2.5rem;">
+                <div class="flex-between mb-8">
+                    <div>
+                        <p class="text-muted uppercase text-xs font-bold">Formal Agreement</p>
+                        <h1 style="font-size: 1.75rem;">WorkLance Contract</h1>
+                    </div>
+                    <div id="contract-status-badge" class="badge">DRAFT</div>
+                </div>
+                <div class="contract-content p-6 mb-8">
+                    <p id="contract-text">Loading...</p>
+                </div>
+                <div class="grid" style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="card p-4 bg-main">
+                        <p class="text-xs text-muted mb-1">CLIENT</p>
+                        <p id="client-status" class="font-bold">-</p>
+                    </div>
+                    <div class="card p-4 bg-main">
+                        <p class="text-xs text-muted mb-1">FREELANCER</p>
+                        <p id="freelancer-status" class="font-bold">-</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-main hidden"
+                    style="border-radius: 12px; border-left: 6px solid var(--primary);">
+                    <div class="flex-between">
+                        <div>
+                            <p class="text-xs text-muted uppercase font-bold mb-1">Project Deadline</p>
+                            <p id="contract-deadline-display" class="font-bold text-lg">Loading...</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-muted uppercase font-bold mb-1">Time Tracker</p>
+                            <p id="contract-timer" class="font-bold" style="color: var(--primary);">Calculating...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="contract-actions" class="mt-8 pt-8 border-t"></div>
+            </div>
+            <div id="payment-section" class="hidden mt-8">
+                <div class="card p-6" style="border-left: 6px solid var(--warning);">
+                    <div class="flex-between mb-4">
+                        <h3 class="m-0">Fund Escrow</h3>
+                        <button id="cancel-btn-active" class="btn btn-secondary"
+                            style="border-color: var(--error); color: var(--error); padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel
+                            Order</button>
+                    </div>
+                    <p class="text-muted mb-6">Money is held securely until completion.</p>
+                    <button id="fund-btn" class="btn btn-primary w-full">Pay via UPI (Mock)</button>
+                </div>
+            </div>
+            <div id="release-section" class="hidden mt-8">
+                <div class="card p-6" style="border-left: 6px solid var(--success);">
+                    <div class="flex-between mb-4">
+                        <h3 class="m-0">Work Completed?</h3>
+                        <button id="cancel-btn" class="btn btn-secondary"
+                            style="border-color: var(--error); color: var(--error); padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel
+                            & Refund</button>
+                    </div>
+                    <button id="release-btn" class="btn btn-primary w-full">Release Payment & Award Trust</button>
+                </div>
+            </div>
+            <div id="payment-success" class="hidden mt-8 text-center p-8 card">
+                <div style="font-size: 3rem;">🎉</div>
+                <h2>Success!</h2><button onclick="app.showDashboard()" class="btn btn-secondary mt-6">Return to
+                    Hub</button>
+            </div>
+
+            <!-- Private Chatroom -->
+            <div id="chat-section" class="hidden mt-8">
+                <div class="card p-6" style="border-top: 6px solid var(--primary); background: #f9fafb;">
+                    <div class="flex-between mb-4">
+                        <h3 class="font-bold flex items-center gap-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Direct Messages
+                        </h3>
+                        <span id="chat-status" class="text-xs text-muted">Secure Local Chat</span>
+                    </div>
+                    <div id="chat-messages"
+                        style="height: 300px; overflow-y: auto; padding: 1rem; background: white; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <!-- Messages loaded here -->
+                    </div>
+                    <form id="chat-form" onsubmit="app.handleSendMessage(event)" class="flex gap-2">
+                        <input type="text" id="chat-input" placeholder="Type your message..."
+                            style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <button type="submit" class="btn btn-primary px-6">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="toast-container"></div>
+    <div id="loader" class="hidden"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; z-index:999;">
+        <div
+            style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite;">
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

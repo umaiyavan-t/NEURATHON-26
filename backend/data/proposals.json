@@ -1,0 +1,20 @@
+[
+    {
+        "job_id": "job_1",
+        "freelancer_id": "user_freelancer_2",
+        "price": 5000.0,
+        "timeline": "1 week",
+        "message": "Build ai chat bot using gemini",
+        "id": "prop_user_freelancer_2_job_1",
+        "status": "pending"
+    },
+    {
+        "job_id": "job_2",
+        "freelancer_id": "user_freelancer_2",
+        "price": 1672.0,
+        "timeline": "1 day",
+        "message": "Create a React dashboard using React.js ",
+        "id": "prop_user_freelancer_2_job_2",
+        "status": "pending"
+    }
+]

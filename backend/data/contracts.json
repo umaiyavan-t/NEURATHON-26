@@ -1,0 +1,50 @@
+[
+    {
+        "job_id": "job_1",
+        "freelancer_id": "user_freelancer_2",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "price": 5000.0,
+        "scope": "Standard Project Scope",
+        "timeline": "As per proposal",
+        "deadline_days": 7,
+        "id": "contract_job_1_user_fre",
+        "status": "completed",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-10 10:31:41.148019",
+        "deadline": "2026-02-17 10:31:41.148114",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Sanjay (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Standard Project Scope\n2. COMPENSATION: The total fee for this project is \u20b95000.0.\n3. DEADLINE: Work must be completed by 2026-02-17.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    },
+    {
+        "job_id": "job_2",
+        "freelancer_id": "user_freelancer_2",
+        "client_id": "user_client_5",
+        "price": 1672.0,
+        "scope": "Standard Project Scope",
+        "timeline": "As per proposal",
+        "deadline_days": 7,
+        "id": "contract_job_2_user_fre",
+        "status": "in_escrow",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-10 10:41:26.089506",
+        "deadline": "2026-02-17 10:41:26.089513",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Client_5_Corp (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Standard Project Scope\n2. COMPENSATION: The total fee for this project is \u20b91672.0.\n3. DEADLINE: Work must be completed by 2026-02-17.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    },
+    {
+        "job_id": "job_demo_fail",
+        "freelancer_id": "user_freelancer_2",
+        "client_id": "user_client_1",
+        "price": 2500.0,
+        "scope": "Fixing critical production bug",
+        "timeline": "Fast track",
+        "deadline_days": 1,
+        "id": "contract_demo_failing",
+        "status": "completed",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-05 10:00:00.000000",
+        "deadline": "2026-02-08 10:00:00.000000",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Client_1_Corp (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Fixing critical production bug\n2. COMPENSATION: The total fee for this project is \u20b92500.0.\n3. DEADLINE: Work must be completed by 2026-02-08.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    }
+]

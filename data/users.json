@@ -1,0 +1,375 @@
+[
+    {
+        "id": "user_client_1",
+        "name": "Client_1_Corp",
+        "role": "client",
+        "email": "client1@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Kotlin solutions in West Bengal.",
+        "region": "West Bengal",
+        "languages": [
+            "Bengali"
+        ]
+    },
+    {
+        "id": "user_client_2",
+        "name": "Client_2_Corp",
+        "role": "client",
+        "email": "client2@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Graphic Design solutions in Telangana.",
+        "region": "Telangana",
+        "languages": [
+            "Bengali"
+        ]
+    },
+    {
+        "id": "user_client_3",
+        "name": "Client_3_Corp",
+        "role": "client",
+        "email": "client3@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Figma solutions in Telangana.",
+        "region": "Telangana",
+        "languages": [
+            "Malayalam"
+        ]
+    },
+    {
+        "id": "user_client_4",
+        "name": "Client_4_Corp",
+        "role": "client",
+        "email": "client4@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Cybersecurity solutions in Maharashtra.",
+        "region": "Maharashtra",
+        "languages": [
+            "Kannada"
+        ]
+    },
+    {
+        "id": "user_client_5",
+        "name": "Client_5_Corp",
+        "role": "client",
+        "email": "client5@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Terraform solutions in Tamil Nadu.",
+        "region": "Tamil Nadu",
+        "languages": [
+            "Bengali"
+        ]
+    },
+    {
+        "id": "user_client_6",
+        "name": "Client_6_Corp",
+        "role": "client",
+        "email": "client6@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on AI solutions in Delhi.",
+        "region": "Delhi",
+        "languages": [
+            "Marathi"
+        ]
+    },
+    {
+        "id": "user_client_7",
+        "name": "Client_7_Corp",
+        "role": "client",
+        "email": "client7@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on AWS solutions in Tamil Nadu.",
+        "region": "Tamil Nadu",
+        "languages": [
+            "Gujarati"
+        ]
+    },
+    {
+        "id": "user_client_8",
+        "name": "Client_8_Corp",
+        "role": "client",
+        "email": "client8@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Vue.js solutions in Kerala.",
+        "region": "Kerala",
+        "languages": [
+            "Malayalam"
+        ]
+    },
+    {
+        "id": "user_client_9",
+        "name": "Client_9_Corp",
+        "role": "client",
+        "email": "client9@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Machine Learning solutions in West Bengal.",
+        "region": "West Bengal",
+        "languages": [
+            "Gujarati"
+        ]
+    },
+    {
+        "id": "user_client_10",
+        "name": "Client_10_Corp",
+        "role": "client",
+        "email": "client10@demo.com",
+        "password": "password123",
+        "company_bio": "Focusing on Content Writing solutions in Tamil Nadu.",
+        "region": "Tamil Nadu",
+        "languages": [
+            "Tamil"
+        ]
+    },
+    {
+        "name": "Sanjay",
+        "role": "client",
+        "email": "sanjaycvian@gmail.com",
+        "password": "12345678",
+        "skills": [],
+        "min_rate": 0.0,
+        "id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "trust_score": 0,
+        "region": "India",
+        "languages": [
+            "English",
+            "Hindi"
+        ]
+    },
+    {
+        "id": "user_freelancer_1",
+        "name": "Freelancer_1_Pro",
+        "role": "freelancer",
+        "email": "freelancer1@demo.com",
+        "password": "password123",
+        "skills": [
+            "AWS",
+            "Python",
+            "Vue.js",
+            "Swift"
+        ],
+        "min_rate": 1439,
+        "languages": [
+            "English"
+        ],
+        "region": "Karnataka",
+        "experience_level": "Expert",
+        "trust_score": 81,
+        "github": "https://github.com/freelancer1",
+        "linkedin": "https://linkedin.com/in/freelancer1"
+    },
+    {
+        "id": "user_freelancer_2",
+        "name": "Freelancer_2_Pro",
+        "role": "freelancer",
+        "email": "freelancer2@demo.com",
+        "password": "password123",
+        "skills": [
+            "Spring Boot",
+            "Vue.js",
+            "Machine Learning",
+            "Figma"
+        ],
+        "min_rate": 2473,
+        "languages": [
+            "Kannada"
+        ],
+        "region": "Maharashtra",
+        "experience_level": "Expert",
+        "trust_score": 60,
+        "github": "https://github.com/freelancer2",
+        "linkedin": "https://linkedin.com/in/freelancer2"
+    },
+    {
+        "id": "user_freelancer_3",
+        "name": "Freelancer_3_Pro",
+        "role": "freelancer",
+        "email": "freelancer3@demo.com",
+        "password": "password123",
+        "skills": [
+            "Figma",
+            "Swift",
+            "Spring Boot",
+            "React"
+        ],
+        "min_rate": 1940,
+        "languages": [
+            "Marathi"
+        ],
+        "region": "West Bengal",
+        "experience_level": "Entry",
+        "trust_score": 75,
+        "github": "https://github.com/freelancer3",
+        "linkedin": "https://linkedin.com/in/freelancer3"
+    },
+    {
+        "id": "user_freelancer_4",
+        "name": "Freelancer_4_Pro",
+        "role": "freelancer",
+        "email": "freelancer4@demo.com",
+        "password": "password123",
+        "skills": [
+            "Node.js",
+            "Cybersecurity",
+            "Content Writing",
+            "PostgreSQL"
+        ],
+        "min_rate": 945,
+        "languages": [
+            "Kannada"
+        ],
+        "region": "Karnataka",
+        "experience_level": "Expert",
+        "trust_score": 96,
+        "github": "https://github.com/freelancer4",
+        "linkedin": "https://linkedin.com/in/freelancer4"
+    },
+    {
+        "id": "user_freelancer_5",
+        "name": "Freelancer_5_Pro",
+        "role": "freelancer",
+        "email": "freelancer5@demo.com",
+        "password": "password123",
+        "skills": [
+            "Node.js",
+            "Terraform",
+            "Content Writing",
+            "AI"
+        ],
+        "min_rate": 909,
+        "languages": [
+            "Punjabi"
+        ],
+        "region": "Uttar Pradesh",
+        "experience_level": "Expert",
+        "trust_score": 100,
+        "github": "https://github.com/freelancer5",
+        "linkedin": "https://linkedin.com/in/freelancer5"
+    },
+    {
+        "id": "user_freelancer_6",
+        "name": "Freelancer_6_Pro",
+        "role": "freelancer",
+        "email": "freelancer6@demo.com",
+        "password": "password123",
+        "skills": [
+            "Blockchain",
+            "SEO",
+            "React",
+            "Spring Boot"
+        ],
+        "min_rate": 2300,
+        "languages": [
+            "English"
+        ],
+        "region": "Kerala",
+        "experience_level": "Expert",
+        "trust_score": 93,
+        "github": "https://github.com/freelancer6",
+        "linkedin": "https://linkedin.com/in/freelancer6"
+    },
+    {
+        "id": "user_freelancer_7",
+        "name": "Freelancer_7_Pro",
+        "role": "freelancer",
+        "email": "freelancer7@demo.com",
+        "password": "password123",
+        "skills": [
+            "PostgreSQL",
+            "Python",
+            "Vue.js",
+            "Cybersecurity"
+        ],
+        "min_rate": 2384,
+        "languages": [
+            "English"
+        ],
+        "region": "Delhi",
+        "experience_level": "Expert",
+        "trust_score": 77,
+        "github": "https://github.com/freelancer7",
+        "linkedin": "https://linkedin.com/in/freelancer7"
+    },
+    {
+        "id": "user_freelancer_8",
+        "name": "Freelancer_8_Pro",
+        "role": "freelancer",
+        "email": "freelancer8@demo.com",
+        "password": "password123",
+        "skills": [
+            "PostgreSQL",
+            "Kotlin",
+            "Blockchain",
+            "Figma"
+        ],
+        "min_rate": 872,
+        "languages": [
+            "Punjabi"
+        ],
+        "region": "Tamil Nadu",
+        "experience_level": "Entry",
+        "trust_score": 83,
+        "github": "https://github.com/freelancer8",
+        "linkedin": "https://linkedin.com/in/freelancer8"
+    },
+    {
+        "id": "user_freelancer_9",
+        "name": "Freelancer_9_Pro",
+        "role": "freelancer",
+        "email": "freelancer9@demo.com",
+        "password": "password123",
+        "skills": [
+            "Spring Boot",
+            "Figma",
+            "Content Writing",
+            "AWS"
+        ],
+        "min_rate": 941,
+        "languages": [
+            "Bengali"
+        ],
+        "region": "Telangana",
+        "experience_level": "Entry",
+        "trust_score": 73,
+        "github": "https://github.com/freelancer9",
+        "linkedin": "https://linkedin.com/in/freelancer9"
+    },
+    {
+        "id": "user_freelancer_10",
+        "name": "Freelancer_10_Pro",
+        "role": "freelancer",
+        "email": "freelancer10@demo.com",
+        "password": "password123",
+        "skills": [
+            "Content Writing",
+            "Node.js",
+            "Python",
+            "Docker"
+        ],
+        "min_rate": 2323,
+        "languages": [
+            "Bengali"
+        ],
+        "region": "Telangana",
+        "experience_level": "Expert",
+        "trust_score": 84,
+        "github": "https://github.com/freelancer10",
+        "linkedin": "https://linkedin.com/in/freelancer10"
+    },
+    {
+        "name": "Sanjay",
+        "role": "freelancer",
+        "email": "sanjaycvian1@gmail.com",
+        "password": "12345678",
+        "skills": [
+            "Python",
+            "React",
+            "FastAPI"
+        ],
+        "min_rate": 600.0,
+        "id": "333dcdfc-802c-4414-8170-4b0ba9827f94",
+        "trust_score": 60,
+        "region": "India",
+        "languages": [
+            "English"
+        ]
+    }
+]
