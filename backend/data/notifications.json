@@ -10,33 +10,93 @@
         "created_at": "2026-02-10 11:01:01.942921"
     },
     {
-        "id": "notif_1770702109_er_2",
-        "user_id": "user_freelancer_2",
-        "title": "New Message",
-        "message": "Client_5_Corp: hi...",
-        "type": "message",
-        "link": "contract_job_2_user_fre",
+        "id": "notif_1770713618_nt_1",
+        "user_id": "user_client_1",
+        "title": "New Proposal Received",
+        "message": "Freelancer_1_Pro applied to 'new website'",
+        "type": "proposal",
+        "link": "job_job_new_website",
         "read": false,
-        "created_at": "2026-02-10 11:01:01.942921"
+        "created_at": "2026-02-10 14:00:22.545950"
     },
     {
-        "id": "notif_1770702224_er_2",
-        "user_id": "user_freelancer_2",
-        "title": "New Message",
-        "message": "Client_5_Corp: hi...",
-        "type": "message",
-        "link": "contract_job_2_user_fre",
+        "id": "notif_1770713639_er_1",
+        "user_id": "user_freelancer_1",
+        "title": "Agreement Signed",
+        "message": "The Client has signed the contract for job 'job_new_website'.",
+        "type": "proposal",
+        "link": "contract_job_new_website_user_fre",
         "read": false,
-        "created_at": "2026-02-10 11:01:01.942921"
+        "created_at": "2026-02-10 14:00:22.545950"
     },
     {
-        "id": "notif_1770702604_er_2",
-        "user_id": "user_freelancer_2",
-        "title": "Payment Released! \ud83c\udf89",
-        "message": "\u20b92500.0 has been released to your account (Late by 3 days. Suggested payout: \u20b92125.0).",
-        "type": "deadline",
-        "link": "contract_demo_failing",
+        "id": "notif_1770713653_er_1",
+        "user_id": "user_freelancer_1",
+        "title": "New Message",
+        "message": "Client_1_Corp: hi when will you be available...",
+        "type": "message",
+        "link": "contract_job_new_website_user_fre",
         "read": false,
-        "created_at": "2026-02-10 11:14:39.320948"
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770713673_nt_1",
+        "user_id": "user_client_1",
+        "title": "Agreement Signed",
+        "message": "The Freelancer has signed the contract for job 'job_new_website'.",
+        "type": "proposal",
+        "link": "contract_job_new_website_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770713678_nt_1",
+        "user_id": "user_client_1",
+        "title": "Milestone Plan Agreed",
+        "message": "The Freelancer has agreed to the milestone plan.",
+        "type": "proposal",
+        "link": "contract_job_new_website_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770713695_nt_1",
+        "user_id": "user_client_1",
+        "title": "New Message",
+        "message": "Freelancer_1_Pro: meet at 2 pm...",
+        "type": "message",
+        "link": "contract_job_new_website_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770713707_er_1",
+        "user_id": "user_freelancer_1",
+        "title": "Milestone Plan Agreed",
+        "message": "The Client has agreed to the milestone plan.",
+        "type": "proposal",
+        "link": "contract_job_new_website_user_fre",
+        "read": false,
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770727069_nt_9",
+        "user_id": "user_client_9",
+        "title": "New Proposal Received",
+        "message": "Freelancer_1_Pro applied to 'Logo Design'",
+        "type": "proposal",
+        "link": "job_job_3",
+        "read": false,
+        "created_at": "2026-02-10 14:00:22.545950"
+    },
+    {
+        "id": "notif_1770727199_6378",
+        "user_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "New Proposal Received",
+        "message": "Freelancer_1_Pro applied to 'new website'",
+        "type": "proposal",
+        "link": "job_job_new_website_1770727174",
+        "read": true,
+        "created_at": "2026-02-10 14:00:22.545950"
     }
 ]

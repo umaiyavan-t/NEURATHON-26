@@ -59,6 +59,9 @@ for i in range(1, 11):
         "languages": [random.choice(languages)],
         "region": region,
         "experience_level": random.choice(["Entry", "Intermediate", "Expert"]),
+        "portfolio": [
+            {"title": f"{random.choice(skills_pool)} Project", "description": f"Developed a {random.choice(skills_pool)} based solution.", "skills": random.sample(skills_pool, 2)}
+        ],
         "trust_score": random.randint(60, 100),
         "github": f"https://github.com/freelancer{i}",
         "linkedin": f"https://linkedin.com/in/freelancer{i}"
@@ -75,7 +78,12 @@ freelancers.append({
     "id": "333dcdfc-802c-4414-8170-4b0ba9827f94",
     "trust_score": 60,
     "region": "India",
-    "languages": ["English"]
+    "languages": ["English"],
+    "portfolio": [
+        {"title": "E-commerce Website", "description": "Built a full-stack website for a cafe with online ordering", "skills": ["React", "FastAPI"]},
+        {"title": "AI Scraper", "description": "Automated data extraction from real estate sites using Selenium", "skills": ["Python", "Selenium"]}
+    ],
+    "skill_level": "Expert"
 })
 
 all_users = clients + freelancers

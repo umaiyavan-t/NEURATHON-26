@@ -5,10 +5,10 @@
         "role": "client",
         "email": "client1@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Kotlin solutions in West Bengal.",
-        "region": "West Bengal",
+        "company_bio": "Focusing on Cybersecurity solutions in Rajasthan.",
+        "region": "Rajasthan",
         "languages": [
-            "Bengali"
+            "Punjabi"
         ]
     },
     {
@@ -17,10 +17,10 @@
         "role": "client",
         "email": "client2@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Graphic Design solutions in Telangana.",
-        "region": "Telangana",
+        "company_bio": "Focusing on Machine Learning solutions in Karnataka.",
+        "region": "Karnataka",
         "languages": [
-            "Bengali"
+            "Punjabi"
         ]
     },
     {
@@ -29,10 +29,10 @@
         "role": "client",
         "email": "client3@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Figma solutions in Telangana.",
-        "region": "Telangana",
+        "company_bio": "Focusing on Terraform solutions in Gujarat.",
+        "region": "Gujarat",
         "languages": [
-            "Malayalam"
+            "Hindi"
         ]
     },
     {
@@ -41,10 +41,10 @@
         "role": "client",
         "email": "client4@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Cybersecurity solutions in Maharashtra.",
-        "region": "Maharashtra",
+        "company_bio": "Focusing on Cybersecurity solutions in West Bengal.",
+        "region": "West Bengal",
         "languages": [
-            "Kannada"
+            "Punjabi"
         ]
     },
     {
@@ -53,10 +53,10 @@
         "role": "client",
         "email": "client5@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Terraform solutions in Tamil Nadu.",
-        "region": "Tamil Nadu",
+        "company_bio": "Focusing on SEO solutions in Telangana.",
+        "region": "Telangana",
         "languages": [
-            "Bengali"
+            "Punjabi"
         ]
     },
     {
@@ -65,10 +65,10 @@
         "role": "client",
         "email": "client6@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on AI solutions in Delhi.",
-        "region": "Delhi",
+        "company_bio": "Focusing on Spring Boot solutions in Kerala.",
+        "region": "Kerala",
         "languages": [
-            "Marathi"
+            "Kannada"
         ]
     },
     {
@@ -77,10 +77,10 @@
         "role": "client",
         "email": "client7@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on AWS solutions in Tamil Nadu.",
-        "region": "Tamil Nadu",
+        "company_bio": "Focusing on AWS solutions in Rajasthan.",
+        "region": "Rajasthan",
         "languages": [
-            "Gujarati"
+            "Hindi"
         ]
     },
     {
@@ -89,10 +89,10 @@
         "role": "client",
         "email": "client8@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Vue.js solutions in Kerala.",
-        "region": "Kerala",
+        "company_bio": "Focusing on Blockchain solutions in Telangana.",
+        "region": "Telangana",
         "languages": [
-            "Malayalam"
+            "Gujarati"
         ]
     },
     {
@@ -101,10 +101,10 @@
         "role": "client",
         "email": "client9@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Machine Learning solutions in West Bengal.",
-        "region": "West Bengal",
+        "company_bio": "Focusing on PostgreSQL solutions in Rajasthan.",
+        "region": "Rajasthan",
         "languages": [
-            "Gujarati"
+            "Tamil"
         ]
     },
     {
@@ -113,10 +113,10 @@
         "role": "client",
         "email": "client10@demo.com",
         "password": "password123",
-        "company_bio": "Focusing on Content Writing solutions in Tamil Nadu.",
-        "region": "Tamil Nadu",
+        "company_bio": "Focusing on Node.js solutions in Maharashtra.",
+        "region": "Maharashtra",
         "languages": [
-            "Tamil"
+            "Hindi"
         ]
     },
     {
@@ -141,18 +141,28 @@
         "email": "freelancer1@demo.com",
         "password": "password123",
         "skills": [
+            "Spring Boot",
             "AWS",
-            "Python",
-            "Vue.js",
-            "Swift"
+            "Content Writing",
+            "SEO"
         ],
-        "min_rate": 1439,
+        "min_rate": 2024,
         "languages": [
-            "English"
+            "Malayalam"
         ],
-        "region": "Karnataka",
-        "experience_level": "Expert",
-        "trust_score": 81,
+        "region": "Telangana",
+        "experience_level": "Entry",
+        "portfolio": [
+            {
+                "title": "AWS Project",
+                "description": "Developed a Python based solution.",
+                "skills": [
+                    "Terraform",
+                    "Blockchain"
+                ]
+            }
+        ],
+        "trust_score": 92,
         "github": "https://github.com/freelancer1",
         "linkedin": "https://linkedin.com/in/freelancer1"
     },
@@ -163,18 +173,28 @@
         "email": "freelancer2@demo.com",
         "password": "password123",
         "skills": [
-            "Spring Boot",
-            "Vue.js",
-            "Machine Learning",
-            "Figma"
+            "Terraform",
+            "Kotlin",
+            "Blockchain",
+            "Graphic Design"
         ],
-        "min_rate": 2473,
+        "min_rate": 1080,
         "languages": [
-            "Kannada"
+            "Hindi"
         ],
-        "region": "Maharashtra",
-        "experience_level": "Expert",
-        "trust_score": 60,
+        "region": "Uttar Pradesh",
+        "experience_level": "Entry",
+        "portfolio": [
+            {
+                "title": "Python Project",
+                "description": "Developed a SEO based solution.",
+                "skills": [
+                    "AI",
+                    "Vue.js"
+                ]
+            }
+        ],
+        "trust_score": 99,
         "github": "https://github.com/freelancer2",
         "linkedin": "https://linkedin.com/in/freelancer2"
     },
@@ -185,18 +205,28 @@
         "email": "freelancer3@demo.com",
         "password": "password123",
         "skills": [
-            "Figma",
+            "Terraform",
             "Swift",
-            "Spring Boot",
-            "React"
+            "Figma",
+            "Blockchain"
         ],
-        "min_rate": 1940,
+        "min_rate": 1304,
         "languages": [
-            "Marathi"
+            "English"
         ],
-        "region": "West Bengal",
-        "experience_level": "Entry",
-        "trust_score": 75,
+        "region": "Uttar Pradesh",
+        "experience_level": "Expert",
+        "portfolio": [
+            {
+                "title": "Terraform Project",
+                "description": "Developed a Vue.js based solution.",
+                "skills": [
+                    "Graphic Design",
+                    "Machine Learning"
+                ]
+            }
+        ],
+        "trust_score": 90,
         "github": "https://github.com/freelancer3",
         "linkedin": "https://linkedin.com/in/freelancer3"
     },
@@ -207,18 +237,28 @@
         "email": "freelancer4@demo.com",
         "password": "password123",
         "skills": [
-            "Node.js",
+            "Python",
             "Cybersecurity",
-            "Content Writing",
-            "PostgreSQL"
+            "AI",
+            "Swift"
         ],
-        "min_rate": 945,
+        "min_rate": 2388,
         "languages": [
-            "Kannada"
+            "Hindi"
         ],
-        "region": "Karnataka",
-        "experience_level": "Expert",
-        "trust_score": 96,
+        "region": "West Bengal",
+        "experience_level": "Entry",
+        "portfolio": [
+            {
+                "title": "SEO Project",
+                "description": "Developed a Node.js based solution.",
+                "skills": [
+                    "Spring Boot",
+                    "AI"
+                ]
+            }
+        ],
+        "trust_score": 61,
         "github": "https://github.com/freelancer4",
         "linkedin": "https://linkedin.com/in/freelancer4"
     },
@@ -229,18 +269,28 @@
         "email": "freelancer5@demo.com",
         "password": "password123",
         "skills": [
-            "Node.js",
-            "Terraform",
-            "Content Writing",
-            "AI"
+            "Python",
+            "SEO",
+            "Cybersecurity",
+            "Blockchain"
         ],
-        "min_rate": 909,
+        "min_rate": 1686,
         "languages": [
-            "Punjabi"
+            "Tamil"
         ],
-        "region": "Uttar Pradesh",
+        "region": "Telangana",
         "experience_level": "Expert",
-        "trust_score": 100,
+        "portfolio": [
+            {
+                "title": "React Project",
+                "description": "Developed a AWS based solution.",
+                "skills": [
+                    "React",
+                    "Content Writing"
+                ]
+            }
+        ],
+        "trust_score": 64,
         "github": "https://github.com/freelancer5",
         "linkedin": "https://linkedin.com/in/freelancer5"
     },
@@ -251,18 +301,28 @@
         "email": "freelancer6@demo.com",
         "password": "password123",
         "skills": [
-            "Blockchain",
-            "SEO",
-            "React",
-            "Spring Boot"
+            "AI",
+            "Cybersecurity",
+            "Node.js",
+            "Swift"
         ],
-        "min_rate": 2300,
+        "min_rate": 2604,
         "languages": [
-            "English"
+            "Bengali"
         ],
         "region": "Kerala",
-        "experience_level": "Expert",
-        "trust_score": 93,
+        "experience_level": "Entry",
+        "portfolio": [
+            {
+                "title": "FastAPI Project",
+                "description": "Developed a FastAPI based solution.",
+                "skills": [
+                    "FastAPI",
+                    "Cybersecurity"
+                ]
+            }
+        ],
+        "trust_score": 84,
         "github": "https://github.com/freelancer6",
         "linkedin": "https://linkedin.com/in/freelancer6"
     },
@@ -274,17 +334,27 @@
         "password": "password123",
         "skills": [
             "PostgreSQL",
-            "Python",
-            "Vue.js",
+            "Docker",
+            "React",
             "Cybersecurity"
         ],
-        "min_rate": 2384,
+        "min_rate": 1085,
         "languages": [
             "English"
         ],
-        "region": "Delhi",
-        "experience_level": "Expert",
-        "trust_score": 77,
+        "region": "Gujarat",
+        "experience_level": "Intermediate",
+        "portfolio": [
+            {
+                "title": "Terraform Project",
+                "description": "Developed a SEO based solution.",
+                "skills": [
+                    "Blockchain",
+                    "Swift"
+                ]
+            }
+        ],
+        "trust_score": 61,
         "github": "https://github.com/freelancer7",
         "linkedin": "https://linkedin.com/in/freelancer7"
     },
@@ -295,18 +365,28 @@
         "email": "freelancer8@demo.com",
         "password": "password123",
         "skills": [
-            "PostgreSQL",
-            "Kotlin",
-            "Blockchain",
+            "FastAPI",
+            "Cybersecurity",
+            "React",
             "Figma"
         ],
-        "min_rate": 872,
+        "min_rate": 1888,
         "languages": [
             "Punjabi"
         ],
-        "region": "Tamil Nadu",
+        "region": "Telangana",
         "experience_level": "Entry",
-        "trust_score": 83,
+        "portfolio": [
+            {
+                "title": "Kotlin Project",
+                "description": "Developed a Python based solution.",
+                "skills": [
+                    "Blockchain",
+                    "Cybersecurity"
+                ]
+            }
+        ],
+        "trust_score": 61,
         "github": "https://github.com/freelancer8",
         "linkedin": "https://linkedin.com/in/freelancer8"
     },
@@ -317,18 +397,28 @@
         "email": "freelancer9@demo.com",
         "password": "password123",
         "skills": [
-            "Spring Boot",
-            "Figma",
-            "Content Writing",
-            "AWS"
+            "Graphic Design",
+            "Blockchain",
+            "Machine Learning",
+            "Docker"
         ],
-        "min_rate": 941,
+        "min_rate": 2022,
         "languages": [
-            "Bengali"
+            "Hindi"
         ],
-        "region": "Telangana",
-        "experience_level": "Entry",
-        "trust_score": 73,
+        "region": "Karnataka",
+        "experience_level": "Intermediate",
+        "portfolio": [
+            {
+                "title": "AWS Project",
+                "description": "Developed a AWS based solution.",
+                "skills": [
+                    "Swift",
+                    "Python"
+                ]
+            }
+        ],
+        "trust_score": 60,
         "github": "https://github.com/freelancer9",
         "linkedin": "https://linkedin.com/in/freelancer9"
     },
@@ -339,18 +429,28 @@
         "email": "freelancer10@demo.com",
         "password": "password123",
         "skills": [
-            "Content Writing",
-            "Node.js",
-            "Python",
-            "Docker"
+            "Machine Learning",
+            "React",
+            "Terraform",
+            "FastAPI"
         ],
-        "min_rate": 2323,
+        "min_rate": 941,
         "languages": [
-            "Bengali"
+            "Malayalam"
         ],
-        "region": "Telangana",
-        "experience_level": "Expert",
-        "trust_score": 84,
+        "region": "Karnataka",
+        "experience_level": "Intermediate",
+        "portfolio": [
+            {
+                "title": "Spring Boot Project",
+                "description": "Developed a Content Writing based solution.",
+                "skills": [
+                    "PostgreSQL",
+                    "Docker"
+                ]
+            }
+        ],
+        "trust_score": 91,
         "github": "https://github.com/freelancer10",
         "linkedin": "https://linkedin.com/in/freelancer10"
     },
@@ -370,6 +470,25 @@
         "region": "India",
         "languages": [
             "English"
-        ]
+        ],
+        "portfolio": [
+            {
+                "title": "E-commerce Website",
+                "description": "Built a full-stack website for a cafe with online ordering",
+                "skills": [
+                    "React",
+                    "FastAPI"
+                ]
+            },
+            {
+                "title": "AI Scraper",
+                "description": "Automated data extraction from real estate sites using Selenium",
+                "skills": [
+                    "Python",
+                    "Selenium"
+                ]
+            }
+        ],
+        "skill_level": "Expert"
     }
 ]

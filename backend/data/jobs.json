@@ -182,5 +182,126 @@
         "duration": "5 months",
         "created_at": "2026-02-10 09:46:39.062930",
         "status": "open"
+    },
+    {
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "build an website for my cafe ",
+        "description": "ooooooo",
+        "required_skills": [
+            "Python",
+            "Selenium",
+            "BeautifulSoup"
+        ],
+        "budget": 10000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English",
+            "Tamil"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_build_an_website_for_my_cafe",
+        "created_at": "2026-02-10 12:51:00.633483",
+        "status": "in_progress"
+    },
+    {
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "build an website for my school",
+        "description": "ooo",
+        "required_skills": [
+            "Python",
+            "Selenium",
+            "BeautifulSoup"
+        ],
+        "budget": 4000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_build_an_website_for_my_school",
+        "created_at": "2026-02-10 13:20:50.283628",
+        "status": "in_progress"
+    },
+    {
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "Build a Python Scraping bot",
+        "description": "python",
+        "required_skills": [
+            "Python",
+            "Selenium",
+            "BeautifulSoup"
+        ],
+        "budget": 4000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English",
+            "Tamil"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_build_a_python_scraping_bot",
+        "created_at": "2026-02-10 14:13:38.846454",
+        "status": "open"
+    },
+    {
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "Build a Python Scraping bot",
+        "description": "python",
+        "required_skills": [
+            "Python",
+            "Selenium",
+            "BeautifulSoup"
+        ],
+        "budget": 4000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English",
+            "Tamil"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_build_a_python_scraping_bot_1770713271",
+        "created_at": "2026-02-10 14:17:51.560069",
+        "status": "open"
+    },
+    {
+        "client_id": "user_client_1",
+        "title": "new website",
+        "description": "python",
+        "required_skills": [
+            "python css html"
+        ],
+        "budget": 4000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English",
+            "Tamil"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_new_website",
+        "created_at": "2026-02-10 14:22:43.328143",
+        "status": "in_progress"
+    },
+    {
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "title": "new website",
+        "description": "bbb",
+        "required_skills": [
+            "python css html"
+        ],
+        "budget": 4000.0,
+        "timeline": "Not set",
+        "languages": [
+            "English",
+            "Tamil"
+        ],
+        "region": "India",
+        "experience_required": "Intermediate",
+        "id": "job_new_website_1770727174",
+        "created_at": "2026-02-10 18:09:34.579724",
+        "status": "open"
     }
 ]

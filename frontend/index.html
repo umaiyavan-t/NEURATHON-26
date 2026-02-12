@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkLance | Premium Freelance Platform</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -240,14 +241,44 @@
             <h3 class="mb-4">Your Applied Jobs</h3>
             <div id="freelancer-proposals-list" class="flex flex-col gap-4 mb-8"></div>
 
-            <h3 class="mb-4">AI Recommended Jobs</h3>
-            <div id="freelancer-jobs-list" class="flex flex-col gap-4"></div>
+            <div class="flex gap-6">
+                <!-- Advanced Filter Sidebar -->
+                <aside id="job-filters" class="card p-4 h-fit sticky top-6"
+                    style="width: 280px; position: relative; margin:0;">
+                    <h4 class="mb-4">Advanced Filters</h4>
+                    <div class="input-group">
+                        <label>Budget (Min ₹)</label>
+                        <input type="number" id="filter-min-budget" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Budget (Max ₹)</label>
+                        <input type="number" id="filter-max-budget" placeholder="1000000">
+                    </div>
+                    <div class="input-group">
+                        <label>Region</label>
+                        <input type="text" id="filter-region" placeholder="e.g. Karnataka">
+                    </div>
+                    <div class="input-group">
+                        <label>Skills</label>
+                        <input type="text" id="filter-skills" placeholder="Python, React...">
+                    </div>
+                    <button onclick="app.applyFilters()" class="btn btn-primary btn-block">Apply Filters</button>
+                    <button onclick="app.resetFilters()" class="btn btn-secondary btn-block mt-2">Reset</button>
+                </aside>
+
+                <div class="flex-1">
+                    <h3 class="mb-4">AI Recommended Jobs</h3>
+                    <div id="freelancer-jobs-list" class="flex flex-col gap-4"></div>
+                </div>
+            </div>
         </div>
 
         <!-- 5. Profile View -->
         <div id="profile-view" class="hidden w-full" style="max-width: 800px;">
             <div class="card p-6">
-                <h2 class="mb-6">Edit My Profile</h2>
+                <h2 class="mb-6" style="margin-bottom: 0.5rem;">Edit My Profile</h2>
+                <div id="prof-ai-badge" class="badge badge-success hidden mb-6"
+                    style="background: #10b981; color: white; display: inline-block;">AI Level: Expert</div>
                 <form id="profile-form">
                     <div class="input-group">
                         <label>Full Name</label>
@@ -310,8 +341,11 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>Portfolio / Website</label>
-                            <input type="url" id="prof-portfolio" placeholder="https://..." class="text-sm">
+                            <label>Portfolio (Previous Projects - JSON)</label>
+                            <textarea id="prof-portfolio" class="input w-full p-3 bg-main border-none text-sm" rows="6"
+                                placeholder='[{"title": "Cafe Website", "description": "Built a responsive site for a cafe using React", "skills": ["React", "CSS"]}]'></textarea>
+                            <p class="text-[10px] text-muted mt-1 italic">Tip: List projects you have done before. AI
+                                will analyze this to match you with similar jobs.</p>
                         </div>
                         <div class="input-group mt-4 p-4 bg-main" style="border-radius: 8px;">
                             <label class="font-bold mb-2">Resume / CV (PDF)</label>
@@ -478,7 +512,7 @@
                     </div>
                 </div>
 
-                <div class="mt-8 p-6 bg-main hidden"
+                <div id="deadline-section" class="mt-8 p-6 bg-main hidden"
                     style="border-radius: 12px; border-left: 6px solid var(--primary);">
                     <div class="flex-between">
                         <div>
@@ -492,6 +526,34 @@
                     </div>
                 </div>
                 <div id="contract-actions" class="mt-8 pt-8 border-t"></div>
+
+                <div id="milestones-section" class="mt-8 pt-8 border-t hidden">
+                    <div class="flex-between mb-4">
+                        <div id="milestone-header">
+                            <h3 class="m-0">Milestone Progress</h3>
+                        </div>
+                        <p id="progress-percent" class="font-bold text-primary">0%</p>
+                    </div>
+                    <div class="w-full bg-main rounded-full h-4 mb-8 overflow-hidden">
+                        <div id="progress-bar" class="bg-primary h-full transition-all duration-500" style="width: 0%">
+                        </div>
+                    </div>
+                    <div id="milestones-list" class="flex flex-col gap-4">
+                        <!-- Milestones will be injected here -->
+                    </div>
+
+                    <!-- Mutual Agreement Flow -->
+                    <div id="milestone-agreement-action"
+                        class="hidden mt-6 p-4 bg-primary text-white rounded-lg flex-between"
+                        style="border-left: 6px solid var(--secondary);">
+                        <div>
+                            <h4 class="font-bold">Agree on Milestone Plan</h4>
+                            <p class="text-xs" style="opacity: 0.9;">Agree on project stages before work begins.</p>
+                        </div>
+                        <button id="agree-milestones-btn" class="btn"
+                            style="background: white; color: var(--primary); font-weight: bold;">Agree to Plan</button>
+                    </div>
+                </div>
             </div>
             <div id="payment-section" class="hidden mt-8">
                 <div class="card p-6" style="border-left: 6px solid var(--warning);">
@@ -502,7 +564,7 @@
                             Order</button>
                     </div>
                     <p class="text-muted mb-6">Money is held securely until completion.</p>
-                    <button id="fund-btn" class="btn btn-primary w-full">Pay via UPI (Mock)</button>
+                    <button id="fund-btn" class="btn btn-primary w-full">Secure Pay via Stripe</button>
                 </div>
             </div>
             <div id="release-section" class="hidden mt-8">
@@ -551,6 +613,42 @@
     </main>
 
     <div id="toast-container"></div>
+
+    <!-- Upload Proof Modal -->
+    <div id="milestone-upload-modal" class="modal-overlay hidden">
+        <div class="card p-6" style="max-width: 440px; width: 90%; background: var(--bg-card);">
+            <h3 class="mb-2">Proof of Work</h3>
+            <p class="text-sm text-muted mb-6">Upload a screenshot. We'll add a security watermark.</p>
+            <div class="input-group">
+                <label>Select Image</label>
+                <input type="file" id="proof-file-input" accept="image/*">
+            </div>
+            <div class="flex gap-3 mt-8">
+                <button onclick="app.submitMediaProof()" class="btn btn-primary flex-1">Apply Watermark &
+                    Upload</button>
+                <button onclick="document.getElementById('milestone-upload-modal').classList.add('hidden')"
+                    class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proof Preview Modal -->
+    <div id="proof-preview-modal" class="modal-overlay hidden">
+        <div class="card p-4" style="max-width: 800px; width: 95%; background: var(--bg-card); position: relative;">
+            <button onclick="document.getElementById('proof-preview-modal').classList.add('hidden')" class="btn-icon"
+                style="position: absolute; right: 1rem; top: 1rem; font-size: 1.5rem;">×</button>
+            <h3 class="mb-4">Watermarked Proof Preview</h3>
+            <div id="proof-image-container"
+                style="background: #000; display:flex; justify-content:center; border-radius: 8px; overflow:hidden;">
+                <img id="proof-preview-img" src=""
+                    style="max-width: 100%; height: auto; user-select: none; -webkit-user-drag: none;"
+                    oncontextmenu="return false;">
+            </div>
+            <p class="text-xs text-muted mt-4 text-center">Protected Preview - Read Only (WorkLance Watermark Applied)
+            </p>
+        </div>
+    </div>
+
     <div id="loader" class="hidden"
         style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; z-index:999;">
         <div

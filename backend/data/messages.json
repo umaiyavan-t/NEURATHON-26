@@ -58,5 +58,17 @@
         "sender_id": "user_client_5",
         "text": "hi",
         "timestamp": "2026-02-10 11:01:01.939715"
+    },
+    {
+        "contract_id": "contract_job_new_website_user_fre",
+        "sender_id": "user_client_1",
+        "text": "hi when will you be available",
+        "timestamp": "2026-02-10 14:00:22.542136"
+    },
+    {
+        "contract_id": "contract_job_new_website_user_fre",
+        "sender_id": "user_freelancer_1",
+        "text": "meet at 2 pm",
+        "timestamp": "2026-02-10 14:00:22.542136"
     }
 ]

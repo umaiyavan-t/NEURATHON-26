@@ -23,6 +23,13 @@ const app = {
             app.toast("Backend unreachable", "error");
         }
 
+        // Check for payment success/cancel in URL
+        if (window.location.hash.startsWith("#payment-success")) {
+            const params = new URLSearchParams(window.location.hash.split("?")[1]);
+            const contractId = params.get("contract_id");
+            if (contractId) app.verifyPayment(contractId);
+        }
+
         try {
             const savedUser = localStorage.getItem("worklance_user");
             if (savedUser) {
@@ -168,6 +175,16 @@ const app = {
             document.getElementById("prof-bio").value = data.role === 'client' ? (data.company_bio || "") : (data.bio || "");
             document.getElementById("prof-region").value = data.region || "India";
 
+            const aiBadge = document.getElementById("prof-ai-badge");
+            if (aiBadge) {
+                if (data.skill_level && data.role === 'freelancer') {
+                    aiBadge.innerText = `AI Level: ${data.skill_level}`;
+                    aiBadge.classList.remove("hidden");
+                } else {
+                    aiBadge.classList.add("hidden");
+                }
+            }
+
             // Populate Languages
             const langContainer = document.getElementById("prof-lang-container");
             if (langContainer) {
@@ -183,7 +200,7 @@ const app = {
                 document.getElementById("prof-rate").value = data.min_rate || 500;
                 document.getElementById("prof-github").value = data.github || "";
                 document.getElementById("prof-linkedin").value = data.linkedin || "";
-                document.getElementById("prof-portfolio").value = data.portfolio || "";
+                document.getElementById("prof-portfolio").value = data.portfolio ? JSON.stringify(data.portfolio, null, 2) : "";
 
                 const resumeLink = document.getElementById("resume-view-link");
                 if (data.resume_url) {
@@ -210,10 +227,18 @@ const app = {
         app.setLoading(true);
         try {
             const selectedLangs = Array.from(document.querySelectorAll('input[name="prof-lang"]:checked')).map(c => c.value);
+            let portfolioData = [];
+            const portfolioRaw = document.getElementById("prof-portfolio").value.trim();
+            if (portfolioRaw) {
+                try { portfolioData = JSON.parse(portfolioRaw); }
+                catch (e) { throw new Error("Portfolio must be valid JSON array of objects."); }
+            }
+
             const payload = {
                 name: document.getElementById("prof-name").value,
                 languages: selectedLangs,
-                region: document.getElementById("prof-region").value
+                region: document.getElementById("prof-region").value,
+                portfolio: portfolioData
             };
 
             if (app.user.role === 'client') {
@@ -394,7 +419,7 @@ const app = {
                             </div>
                             <button onclick="app.viewJob('${job.id}')" class="btn btn-primary">Apply Now</button>
                         </div>
-                        ${job.match_reason ? `<div class="mt-4 pt-3 border-t text-xs italic text-success border-t" style="border-top:1px solid var(--border)">✨ ${job.match_reason}</div>` : ''}
+                        ${job.ai_reason ? `<div class="mt-4 pt-3 border-t text-xs italic text-success border-t" style="border-top:1px solid var(--border)">✨ AI Match: ${job.ai_reason}</div>` : ''}
                     `;
                     list.appendChild(div);
                 });
@@ -605,9 +630,10 @@ const app = {
                                 </div>
                                 <div class="text-right">
                                     <div class="text-primary font-bold">${f.match_score}% Match</div>
-                                    <p class="text-xs text-muted">AI Rank #1</p>
+                                    <p class="text-[10px] font-bold text-success">${f.skill_level || 'Junior'}</p>
                                 </div>
                             </div>
+                            ${f.ai_reason ? `<div class="mt-2 text-xs italic text-success p-2 bg-main rounded">✨ AI: ${f.ai_reason}</div>` : ''}
                             <div class="mt-4 flex flex-wrap gap-2">
                                 ${f.skills.map(s => `<span class="tag">${s}</span>`).join('')}
                             </div>
@@ -773,9 +799,11 @@ const app = {
             const paySection = document.getElementById("payment-section");
             const relSection = document.getElementById("release-section");
             const sucSection = document.getElementById("payment-success");
+            const deadSection = document.getElementById("deadline-section");
             if (paySection) paySection.classList.add("hidden");
             if (relSection) relSection.classList.add("hidden");
             if (sucSection) sucSection.classList.add("hidden");
+            if (deadSection) deadSection.classList.add("hidden");
 
             if (isMeClient && (contract.status === 'active' || contract.status === 'in_escrow')) {
                 // Determine which section to show
@@ -814,10 +842,15 @@ const app = {
                 if (fundBtn) fundBtn.onclick = async () => {
                     app.setLoading(true);
                     try {
-                        await fetch(`${API_URL}/escrow/fund/${contractId}`, { method: "POST" });
-                        app.toast("Escrow funded!");
-                        await app.viewContract(contractId);
-                    } catch (e) { app.toast("Funding failed", "error"); }
+                        const res = await fetch(`${API_URL}/escrow/create-checkout-session/${contractId}`, { method: "POST" });
+                        const data = await res.json();
+                        if (res.ok && data.url) {
+                            window.location.href = data.url;
+                        } else {
+                            throw new Error(data.detail || "Failed to create checkout session");
+                        }
+                    } catch (e) { app.toast(e.message, "error"); }
+                    finally { app.setLoading(false); }
                 };
 
                 const relBtn = document.getElementById("release-btn");
@@ -829,6 +862,79 @@ const app = {
                         await app.viewContract(contractId);
                     } catch (e) { app.toast("Release failed", "error"); }
                 };
+            }
+
+            if (contract.status !== 'draft' && deadSection) deadSection.classList.remove("hidden");
+
+            // --- Milestone Progress Integration ---
+            const milesSection = document.getElementById("milestones-section");
+            const milesList = document.getElementById("milestones-list");
+            const progBar = document.getElementById("progress-bar");
+            const progPercent = document.getElementById("progress-percent");
+
+            if (milesSection && milesList && contract.milestones) {
+                const isSigned = contract.status !== 'draft';
+                if (isSigned) {
+                    milesSection.classList.remove("hidden");
+                    milesList.innerHTML = "";
+
+                    const agreedBy = contract.milestones_agreed_by || [];
+                    const isAgreed = agreedBy.length >= 2;
+                    const haveIAgreed = agreedBy.includes(app.user.user_id);
+
+                    // Show agreement action if not fully agreed and I haven't agreed
+                    const agreeAction = document.getElementById("milestone-agreement-action");
+                    if (agreeAction) {
+                        if (!isAgreed && !haveIAgreed) {
+                            agreeAction.classList.remove("hidden");
+                            const btn = document.getElementById("agree-milestones-btn");
+                            btn.onclick = () => app.agreeToMilestones(contractId);
+                        } else {
+                            agreeAction.classList.add("hidden");
+                        }
+                    }
+
+                    let totalApprovedWeight = 0;
+                    contract.milestones.forEach((m, idx) => {
+                        if (m.status === 'approved') totalApprovedWeight += m.weight;
+
+                        const div = document.createElement("div");
+                        div.className = "card p-4 flex-between";
+                        div.style.background = "var(--bg-main)";
+                        div.style.borderLeft = m.status === 'approved' ? '4px solid var(--success)' : (m.status === 'submitted' ? '4px solid var(--warning)' : '4px solid var(--border)');
+
+                        const statusBadge = m.status === 'approved' ? '<span class="badge badge-success">Approved</span>' : (m.status === 'submitted' ? '<span class="badge badge-warning">Review Pending</span>' : '<span class="badge">Planned</span>');
+
+                        div.innerHTML = `
+                            <div style="flex:1">
+                                <h4 class="font-bold m-0" style="font-size: 0.9rem;">${m.title}</h4>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] text-muted uppercase">Weight: ${Math.round(m.weight * 100)}%</span>
+                                    ${statusBadge}
+                                </div>
+                                ${m.proof ? `<p class="text-[11px] italic text-muted mt-2 p-2 bg-main rounded border border-dashed" style="border-color: var(--border);">📝 Proof: ${m.proof}</p>` : ''}
+                                ${m.proof_media ? `
+                                    <button onclick="app.previewProof('${m.proof_media}')" class="btn btn-secondary mt-2 px-3 py-1 text-[10px] uppercase font-bold">
+                                        🖼️ View Watermarked Proof
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="flex gap-2 ml-4">
+                                ${!isMeClient && m.status === 'pending' && isAgreed ?
+                                `<button onclick="app.openProofUpload('${contractId}', ${idx})" class="btn btn-secondary px-3 py-1 text-[10px] uppercase font-bold">Submit Proof</button>` : ''}
+                                ${isMeClient && m.status === 'submitted' ?
+                                `<button onclick="app.approveMilestone('${contractId}', ${idx})" class="btn btn-primary px-3 py-1 text-[10px] uppercase font-bold">Approve</button>` : ''}
+                            </div>
+                        `;
+                        milesList.appendChild(div);
+                    });
+
+                    const percent = Math.round(totalApprovedWeight * 100);
+                    progBar.style.width = `${percent}%`;
+                    progPercent.innerText = `${percent}%`;
+                } else {
+                    milesSection.classList.add("hidden");
+                }
             } else if (contract.status === 'completed') {
                 if (sucSection) sucSection.classList.remove("hidden");
             }
@@ -875,7 +981,54 @@ const app = {
         }
     },
 
-    // --- Chat Room Logic ---
+    verifyPayment: async (contractId) => {
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/escrow/payment-success/${contractId}`);
+            const data = await res.json();
+            if (res.ok) {
+                app.toast(data.message);
+                window.location.hash = ""; // Clear hash
+                setTimeout(() => app.viewContract(contractId), 500);
+            } else {
+                app.toast(data.detail || "Payment verification failed", "error");
+            }
+        } catch (e) { app.toast("Verification error", "error"); }
+        finally { app.setLoading(false); }
+    },
+
+    approveMilestone: async (contractId, index) => {
+        if (!confirm("Approve this milestone? This will lock in progress.")) return;
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/contracts/${contractId}/milestone/${index}/approve`, { method: "POST" });
+            const data = await res.json();
+            if (res.ok) {
+                app.toast(data.message);
+                await app.viewContract(contractId);
+            } else throw new Error(data.detail);
+        } catch (e) { app.toast(e.message, "error"); }
+        finally { app.setLoading(false); }
+    },
+
+    submitMilestonePrompt: async (contractId, index) => {
+        const proof = prompt("Enter proof of work (e.g., URL or brief summary):");
+        if (!proof) return;
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/contracts/${contractId}/milestone/${index}/submit`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ proof })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                app.toast(data.message);
+                await app.viewContract(contractId);
+            } else throw new Error(data.detail);
+        } catch (e) { app.toast(e.message, "error"); }
+        finally { app.setLoading(false); }
+    },
 
     loadChatHistory: async (contractId) => {
         try {
@@ -1014,6 +1167,84 @@ const app = {
             await fetch(`${API_URL}/notifications/${app.user.user_id}`, { method: 'DELETE' });
             app.loadNotifications();
         } catch (err) { console.error("Clear notifs error", err); }
+    },
+
+    applyFilters: async () => {
+        const min = document.getElementById("filter-min-budget").value || 0;
+        const max = document.getElementById("filter-max-budget").value || 1000000;
+        const reg = document.getElementById("filter-region").value || "";
+        const skills = document.getElementById("filter-skills").value || "";
+
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/jobs/search?min_budget=${min}&max_budget=${max}&region=${reg}&skills=${skills}`);
+            const jobs = await res.json();
+            app.loadFreelancerDashboard(jobs);
+        } catch (e) { app.toast("Filter failed", "error"); }
+        finally { app.setLoading(false); }
+    },
+
+    resetFilters: () => {
+        document.getElementById("filter-min-budget").value = "";
+        document.getElementById("filter-max-budget").value = "";
+        document.getElementById("filter-region").value = "";
+        document.getElementById("filter-skills").value = "";
+        app.loadFreelancerDashboard();
+    },
+
+    agreeToMilestones: async (contractId) => {
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/contracts/${contractId}/milestones/agree`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contract_id: contractId, user_id: app.user.user_id })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                app.toast(data.message);
+                await app.viewContract(contractId);
+            } else throw new Error(data.detail);
+        } catch (e) { app.toast(e.message, "error"); }
+        finally { app.setLoading(false); }
+    },
+
+    openProofUpload: (contractId, index) => {
+        app.currentUpload = { contractId, index };
+        document.getElementById("milestone-upload-modal").classList.remove("hidden");
+    },
+
+    submitMediaProof: async () => {
+        const fileInput = document.getElementById("proof-file-input");
+        if (!fileInput.files.length) {
+            alert("Please select a file first.");
+            return;
+        }
+        const { contractId, index } = app.currentUpload;
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        app.setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/contracts/${contractId}/milestone/${index}/upload-proof`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            if (res.ok) {
+                app.toast(data.message);
+                document.getElementById("milestone-upload-modal").classList.add("hidden");
+                await app.viewContract(contractId);
+            } else throw new Error(data.detail);
+        } catch (e) { app.toast(e.message, "error"); }
+        finally { app.setLoading(false); }
+    },
+
+    previewProof: (filename) => {
+        const modal = document.getElementById("proof-preview-modal");
+        const img = document.getElementById("proof-preview-img");
+        img.src = `${API_URL}/uploads/proofs/${filename}`;
+        modal.classList.remove("hidden");
     },
 
     initDarkMode: () => {

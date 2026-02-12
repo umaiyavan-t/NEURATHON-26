@@ -46,5 +46,98 @@
         "created_at": "2026-02-05 10:00:00.000000",
         "deadline": "2026-02-08 10:00:00.000000",
         "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Client_1_Corp (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Fixing critical production bug\n2. COMPENSATION: The total fee for this project is \u20b92500.0.\n3. DEADLINE: Work must be completed by 2026-02-08.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    },
+    {
+        "job_id": "job_build_an_website_for_my_cafe",
+        "freelancer_id": "user_freelancer_2",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "price": 10000.0,
+        "scope": "Standard Project Scope",
+        "timeline": "As per proposal",
+        "deadline_days": 7,
+        "id": "contract_job_build_an_website_for_my_cafe_user_fre",
+        "status": "active",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-10 12:52:33.448882",
+        "deadline": "2026-02-17 12:52:33.448891",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Sanjay (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Standard Project Scope\n2. COMPENSATION: The total fee for this project is \u20b910000.0.\n3. DEADLINE: Work must be completed by 2026-02-17.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    },
+    {
+        "job_id": "job_build_an_website_for_my_school",
+        "freelancer_id": "user_freelancer_2",
+        "client_id": "b4b3447c-dc49-40b5-aa46-f93e47136378",
+        "price": 4000.0,
+        "scope": "Standard Project Scope",
+        "timeline": "As per proposal",
+        "deadline_days": 7,
+        "milestones": [
+            {
+                "title": "Project Kickoff & Research",
+                "weight": 0.2,
+                "status": "submitted",
+                "proof": "",
+                "proof_media": "proof_contract_job_build_an_website_for_my_school_user_fre_0_test_jpg.jpg"
+            },
+            {
+                "title": "Core Development",
+                "weight": 0.5,
+                "status": "pending",
+                "proof": ""
+            },
+            {
+                "title": "Final Handover",
+                "weight": 0.3,
+                "status": "pending",
+                "proof": ""
+            }
+        ],
+        "id": "contract_job_build_an_website_for_my_school_user_fre",
+        "status": "active",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-10 13:21:31.011028",
+        "deadline": "2026-02-17 13:21:31.011037",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Sanjay (the \"Client\") and Freelancer_2_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Standard Project Scope\n2. COMPENSATION: The total fee for this project is \u20b94000.0.\n3. DEADLINE: Work must be completed by 2026-02-17.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
+    },
+    {
+        "job_id": "job_new_website",
+        "freelancer_id": "user_freelancer_1",
+        "client_id": "user_client_1",
+        "price": 4500.0,
+        "scope": "Standard Project Scope",
+        "timeline": "As per proposal",
+        "deadline_days": 7,
+        "milestones": [
+            {
+                "title": "Project Kickoff & Research",
+                "weight": 0.2,
+                "status": "pending",
+                "proof": ""
+            },
+            {
+                "title": "Core Development",
+                "weight": 0.5,
+                "status": "pending",
+                "proof": ""
+            },
+            {
+                "title": "Final Handover",
+                "weight": 0.3,
+                "status": "pending",
+                "proof": ""
+            }
+        ],
+        "id": "contract_job_new_website_user_fre",
+        "status": "active",
+        "client_accepted": true,
+        "freelancer_accepted": true,
+        "created_at": "2026-02-10 14:23:56.308061",
+        "milestones_agreed_by": [
+            "user_freelancer_1",
+            "user_client_1"
+        ],
+        "deadline": "2026-02-17 14:23:56.308075",
+        "text": "\nAGREEMENT FOR SERVICES\n\nThis Professional Services Agreement is entered into between Client_1_Corp (the \"Client\") and Freelancer_1_Pro (the \"Freelancer\").\n\n1. SCOPE OF WORK: Standard Project Scope\n2. COMPENSATION: The total fee for this project is \u20b94500.0.\n3. DEADLINE: Work must be completed by 2026-02-17.\n4. LATE DELIVERY TERMS: In the event of late delivery, the total compensation may be subject to a 5% reduction per 24-hour delay, subject to negotiation between the parties.\n5. QUALITY ASSURANCE: Freelancer guarantees professional quality in line with the job description.\n\nDigitally signed and recorded on WorkLance.\n"
     }
 ]

@@ -8,9 +8,22 @@ import datetime
 import json
 import os
 import shutil
+import stripe
+from PIL import Image, ImageDraw, ImageFont
+import io
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Stripe Configuration
+# keys are now loaded from environment variables
+stripe.api_key = os.getenv("STRIPE_API_KEY", "sk_test_placeholder")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "pk_test_placeholder")
+FRONTEND_URL = "http://localhost:8000" # Update this if needed
 
 # --- Utils ---
 from utils import read_json, append_json, write_json, get_by_id, update_json
+from ai_agent import ResumeScanner, SemanticMatcher
 
 def slugify(text: str) -> str:
     return re.sub(r'[\W_]+', '_', text.lower()).strip('_')
@@ -27,8 +40,39 @@ app.add_middleware(
 
 # Ensure upload directory exists
 UPLOAD_DIR = "uploads/resumes"
+PROOFS_DIR = "uploads/proofs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(PROOFS_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+def add_watermark(input_image_path, output_image_path, text="WORKLANCE PROOF"):
+    try:
+        base = Image.open(input_image_path).convert("RGBA")
+        txt = Image.new("RGBA", base.size, (255, 255, 255, 0))
+        # Choose a font size relative to image size
+        font_size = int(base.size[0] / 10)
+        try:
+            # Use default or common font
+            font = ImageFont.truetype("arial.ttf", font_size)
+        except:
+            font = ImageFont.load_default()
+            
+        d = ImageDraw.Draw(txt)
+        # Position in center
+        width, height = base.size
+        textwidth, textheight = d.textbbox((0, 0), text, font=font)[2:]
+        x = (width - textwidth) / 2
+        y = (height - textheight) / 2
+        
+        # Draw semi-transparent text
+        d.text((x, y), text, fill=(255, 255, 255, 80), font=font)
+        
+        watermarked = Image.alpha_composite(base, txt)
+        watermarked.convert("RGB").save(output_image_path, "JPEG", quality=85)
+        return True
+    except Exception as e:
+        print(f"Watermark failed: {e}")
+        return False
 
 # --- Models ---
 class UserRegister(BaseModel):
@@ -39,8 +83,10 @@ class UserRegister(BaseModel):
     skills: List[str] = []
     min_rate: float = 0.0
     languages: List[str] = ["English"]
-    region: str = "India" # e.g., "Karnataka", "Maharashtra"
     experience_level: str = "Intermediate" # "Entry", "Intermediate", "Expert"
+    portfolio: List[dict] = [] # [{title, description, skills}]
+    skill_level: str = "Junior" # Detected by AI Scanner
+    region: str = "India" # e.g., "Karnataka", "Maharashtra"
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
@@ -52,7 +98,8 @@ class UserUpdate(BaseModel):
     company_bio: Optional[str] = None
     github: Optional[str] = None
     linkedin: Optional[str] = None
-    portfolio: Optional[str] = None
+    portfolio: Optional[List[dict]] = None
+    skill_level: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: str
@@ -95,10 +142,14 @@ class ContractCreate(BaseModel):
     scope: str
     timeline: str
     deadline_days: int = 7
+    milestones: Optional[List[dict]] = None # [{title, weight, status: "pending/submitted/approved", proof: ""}]
 
 class AcceptContract(BaseModel):
     contract_id: str
     user_id: str # Who is accepting
+
+class MilestoneSubmit(BaseModel):
+    proof: str
 
 class Notification(BaseModel):
     id: Optional[str] = None
@@ -211,8 +262,12 @@ async def upload_resume(user_id: str, resume: UploadFile = File(...)):
     for u in users:
         if u["id"] == user_id:
             u["resume_url"] = resume_url
+            # AI Scanner Integration
+            new_level = ResumeScanner.scan_pdf(file_path)
+            u["skill_level"] = new_level
+            
             write_json("users.json", users)
-            return {"message": "Resume uploaded", "resume_url": resume_url}
+            return {"message": "Resume uploaded & AI Scanned", "resume_url": resume_url, "ai_skill_level": new_level}
             
     raise HTTPException(status_code=404, detail="User not found")
 
@@ -261,14 +316,14 @@ def match_jobs(freelancer_id: str):
         j_region = job.get("region", "India").lower()
         j_budget = job.get("budget", 0)
         
-        # 1. Skill Match (50%)
+        # 1. Skill Match (40%) - reduced from 50
         overlap = f_skills.intersection(j_skills)
         skill_score = (len(overlap) / len(j_skills)) if j_skills else 0
         
-        # 2. Trust Score (20%)
+        # 2. Trust Score (15%) - reduced from 20
         trust_weight = (freelancer.get("trust_score", 50) / 100)
         
-        # 3. Language Match (15%)
+        # 3. Language Match (10%) - reduced from 15
         f_langs = [l.lower() for l in freelancer.get("languages", [freelancer.get("language", "English")])]
         lang_overlap = set(f_langs).intersection(set(j_langs))
         lang_score = 1.0 if lang_overlap else 0.2
@@ -278,14 +333,18 @@ def match_jobs(freelancer_id: str):
         
         # 5. Rate Fit (5%)
         rate_fit = 1.0 if j_budget >= f_rate else (0.5 if j_budget >= (f_rate * 0.8) else 0.1)
+
+        # 6. AI Portfolio Match (20%) - NEW!
+        portfolio_score, portfolio_reason = SemanticMatcher.calculate_portfolio_similarity(job.get("description", ""), freelancer.get("portfolio", []))
         
-        total_score = (skill_score * 0.5) + (trust_weight * 0.2) + (lang_score * 0.15) + (region_score * 0.1) + (rate_fit * 0.05)
+        total_score = (skill_score * 0.4) + (trust_weight * 0.15) + (lang_score * 0.1) + (region_score * 0.1) + (rate_fit * 0.05) + (portfolio_score * 0.2)
         
-        if skill_score > 0: 
+        if skill_score > 0 or portfolio_score > 0.3: 
             scored_jobs.append({
                 "job": job,
                 "score": round(total_score * 100, 1),
-                "matched_skills": list(overlap)
+                "matched_skills": list(overlap),
+                "ai_reason": portfolio_reason if portfolio_score > 0.3 else f"Matched {len(overlap)} skills."
             })
     
     scored_jobs.sort(key=lambda x: x["score"], reverse=True)
@@ -319,32 +378,36 @@ def get_curated_freelancers(job_id: str):
         f_langs = [l.lower() for l in f.get("languages", [f.get("language", "English")])]
         f_region = f.get("region", "India").lower()
         
-        # 1. Skill Match (50%)
+        # 1. Skill Match (40%) - reduced from 50 to make room for portfolio
         overlap = f_skills.intersection(j_skills)
         skill_score = (len(overlap) / len(j_skills)) if j_skills else 0
         
-        # 2. Trust Score (20%)
+        # 2. Trust Score (15%) - reduced from 20
         trust_weight = (f.get("trust_score", 50) / 100)
         
-        # 3. Language Match (15%)
+        # 3. Language Match (10%) - reduced from 15
         lang_overlap = set(f_langs).intersection(set(j_langs))
         lang_score = 1.0 if lang_overlap else 0.2
         
-        # 4. Region Match (15%)
+        # 4. Region Match (10%) - reduced from 15
         region_score = 1.0 if f_region == j_region else (0.5 if "india" in f_region and "india" in j_region else 0.2)
+
+        # 5. AI Portfolio Similarity (25%) - NEW!
+        portfolio_score, portfolio_reason = SemanticMatcher.calculate_portfolio_similarity(job.get("description", ""), f.get("portfolio", []))
         
-        total_score = (skill_score * 0.5) + (trust_weight * 0.2) + (lang_score * 0.15) + (region_score * 0.15)
+        total_score = (skill_score * 0.4) + (trust_weight * 0.15) + (lang_score * 0.1) + (region_score * 0.1) + (portfolio_score * 0.25)
         
-        if skill_score > 0 or lang_overlap:
+        if skill_score > 0 or lang_overlap or portfolio_score > 0.3:
             f_copy = {k: v for k, v in f.items() if k != "password"}
             f_copy["match_score"] = round(total_score * 100, 1)
+            f_copy["ai_reason"] = portfolio_reason if portfolio_score > 0.3 else f"Matched {len(overlap)} skills."
             scored_freelancers.append(f_copy)
             
     scored_freelancers.sort(key=lambda x: x["match_score"], reverse=True)
     return scored_freelancers[:5]
 
 @app.get("/jobs/search")
-def search_jobs(q: str = "", skills: str = "", min_budget: float = 0.0):
+def search_jobs(q: str = "", skills: str = "", min_budget: float = 0.0, max_budget: float = 1000000.0, region: str = "", experience: str = ""):
     jobs = read_json("jobs.json")
     open_jobs = [j for j in jobs if j["status"] == "open"]
     
@@ -360,11 +423,43 @@ def search_jobs(q: str = "", skills: str = "", min_budget: float = 0.0):
             j_skills = [s.lower() for s in job["required_skills"]]
             if not any(s in j_skills for s in filter_skills):
                 match = False
-        if job["budget"] < min_budget:
+        if job["budget"] < min_budget or job["budget"] > max_budget:
+            match = False
+        if region and region.lower() != job.get("region", "").lower():
+            match = False
+        if experience and experience.lower() != job.get("experience_required", "").lower():
             match = False
             
         if match:
             results.append(job)
+            
+    return results
+
+@app.get("/freelancers/search")
+def search_freelancers(q: str = "", skills: str = "", min_rate: float = 0.0, max_rate: float = 10000.0, region: str = ""):
+    users = read_json("users.json")
+    freelancers = [u for u in users if u["role"] == "freelancer"]
+    
+    results = []
+    q = q.lower()
+    filter_skills = [s.strip().lower() for s in skills.split(",")] if skills else []
+    
+    for f in freelancers:
+        match = True
+        if q and q not in f["name"].lower() and q not in f.get("company_bio", "").lower():
+            match = False
+        if filter_skills:
+            f_skills = [s.lower() for s in f.get("skills", [])]
+            if not any(s in f_skills for s in filter_skills):
+                match = False
+        if f.get("min_rate", 0) < min_rate or f.get("min_rate", 0) > max_rate:
+            match = False
+        if region and region.lower() != f.get("region", "").lower():
+            match = False
+            
+        if match:
+            f_copy = {k: v for k, v in f.items() if k != "password"}
+            results.append(f_copy)
             
     return results
 
@@ -446,6 +541,15 @@ def create_contract(contract: ContractCreate):
     new_contract["freelancer_accepted"] = False
     new_contract["created_at"] = str(datetime.datetime.now())
     
+    # Milestone Initialization
+    if not new_contract.get("milestones"):
+        new_contract["milestones"] = [
+            {"title": "Project Kickoff & Research", "weight": 0.2, "status": "pending", "proof": ""},
+            {"title": "Core Development", "weight": 0.5, "status": "pending", "proof": ""},
+            {"title": "Final Handover", "weight": 0.3, "status": "pending", "proof": ""}
+        ]
+    new_contract["milestones_agreed_by"] = [] # [user_id1, user_id2]
+
     # Calculate deadline
     deadline_date = datetime.datetime.now() + datetime.timedelta(days=contract.deadline_days)
     new_contract["deadline"] = str(deadline_date)
@@ -543,6 +647,61 @@ def accept_contract(payload: AcceptContract):
 
 # --- Routes: Escrow & Trust ---
 
+@app.post("/escrow/create-checkout-session/{contract_id}")
+async def create_checkout_session(contract_id: str):
+    contract = get_by_id("contracts.json", contract_id)
+    if not contract:
+        raise HTTPException(status_code=404, detail="Contract not found")
+    
+    if contract["status"] != "active":
+        raise HTTPException(status_code=400, detail="Contract must be active (signed by both) to fund.")
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'inr',
+                        'unit_amount': int(contract['price'] * 100),
+                        'product_data': {
+                            'name': f"WorkLance Escrow: {contract['scope'][:50]}...",
+                            'description': f"Project ID: {contract['job_id']}",
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=f"{FRONTEND_URL}/#payment-success?contract_id={contract_id}",
+            cancel_url=f"{FRONTEND_URL}/#payment-cancel?contract_id={contract_id}",
+            metadata={
+                "contract_id": contract_id
+            }
+        )
+        return {"id": checkout_session.id, "url": checkout_session.url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/escrow/payment-success/{contract_id}")
+def verify_payment_success(contract_id: str):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == contract_id:
+            c["status"] = "in_escrow"
+            write_json("contracts.json", contracts)
+            
+            # Notify Freelancer
+            create_notification(
+                user_id=c["freelancer_id"],
+                title="Escrow Funded!",
+                message=f"Capital for project '{c['id']}' is now secured in escrow. You can begin work!",
+                type="proposal",
+                link=c["id"]
+            )
+            return {"status": "success", "message": "Escrow funded via Stripe Checkout"}
+    raise HTTPException(status_code=404, detail="Contract not found")
+
 @app.post("/escrow/fund/{contract_id}")
 def fund_escrow(contract_id: str):
     contracts = read_json("contracts.json")
@@ -553,6 +712,110 @@ def fund_escrow(contract_id: str):
             c["status"] = "in_escrow"
             write_json("contracts.json", contracts)
             return {"message": "Escrow funded via Mock Payment"}
+    raise HTTPException(status_code=404, detail="Contract not found")
+
+@app.post("/contracts/{contract_id}/milestone/{index}/submit")
+def submit_milestone(contract_id: str, index: int, payload: MilestoneSubmit):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == contract_id:
+            if not c.get("milestones_agreed_by") or len(c["milestones_agreed_by"]) < 2:
+                raise HTTPException(status_code=400, detail="Milestone plan must be agreed by both parties before submission.")
+            if index < 0 or index >= len(c["milestones"]):
+                raise HTTPException(status_code=400, detail="Invalid milestone index")
+            c["milestones"][index]["status"] = "submitted"
+            c["milestones"][index]["proof"] = payload.proof
+            write_json("contracts.json", contracts)
+            return {"message": "Milestone submitted for review"}
+    raise HTTPException(status_code=404, detail="Contract not found")
+
+@app.post("/contracts/{contract_id}/milestones/agree")
+def agree_milestones(payload: AcceptContract):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == payload.contract_id:
+            agreed = c.get("milestones_agreed_by", [])
+            if payload.user_id not in agreed:
+                agreed.append(payload.user_id)
+                c["milestones_agreed_by"] = agreed
+                write_json("contracts.json", contracts)
+                
+                # Notify the other party
+                other = c["freelancer_id"] if payload.user_id == c["client_id"] else c["client_id"]
+                party = "Client" if payload.user_id == c["client_id"] else "Freelancer"
+                create_notification(other, "Milestone Plan Agreed", f"The {party} has agreed to the milestone plan.", "proposal", c["id"])
+                
+                return {"message": "Milestone plan agreed", "agreed_by": agreed}
+            return {"message": "Already agreed", "agreed_by": agreed}
+    raise HTTPException(status_code=404, detail="Contract not found")
+
+@app.post("/contracts/{contract_id}/milestone/{index}/approve")
+def approve_milestone(contract_id: str, index: int):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == contract_id:
+            if index < 0 or index >= len(c["milestones"]):
+                raise HTTPException(status_code=400, detail="Invalid milestone index")
+            c["milestones"][index]["status"] = "approved"
+            write_json("contracts.json", contracts)
+            return {"message": "Milestone approved!"}
+    raise HTTPException(status_code=404, detail="Contract not found")
+
+@app.post("/contracts/{contract_id}/milestone/{index}/upload-proof")
+async def upload_milestone_proof(contract_id: str, index: int, file: UploadFile = File(...)):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == contract_id:
+            if index < 0 or index >= len(c["milestones"]):
+                raise HTTPException(status_code=400, detail="Invalid milestone index")
+            
+            # Save original temporarily
+            temp_path = os.path.join(PROOFS_DIR, f"temp_{file.filename}")
+            with open(temp_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            # Watermark it
+            final_filename = f"proof_{contract_id}_{index}_{slugify(file.filename)}.jpg"
+            final_path = os.path.join(PROOFS_DIR, final_filename)
+            
+            success = add_watermark(temp_path, final_path)
+            os.remove(temp_path)
+            
+            if success:
+                c["milestones"][index]["proof_media"] = final_filename
+                c["milestones"][index]["status"] = "submitted"
+                write_json("contracts.json", contracts)
+                return {"message": "Proof uploaded and watermarked", "filename": final_filename}
+            else:
+                raise HTTPException(status_code=500, detail="Failed to watermark image")
+                
+    raise HTTPException(status_code=404, detail="Contract not found")
+
+@app.post("/escrow/cancel/{contract_id}")
+def cancel_escrow(contract_id: str):
+    contracts = read_json("contracts.json")
+    for c in contracts:
+        if c["id"] == contract_id:
+            if c["status"] != "in_escrow":
+                raise HTTPException(status_code=400, detail="Funds must be in escrow to perform a pro-rata cancellation.")
+            
+            # Pro-rata calculation
+            approved_weight = sum(m["weight"] for m in c.get("milestones", []) if m["status"] == "approved")
+            freelancer_share = c["price"] * approved_weight
+            refund_amount = c["price"] - freelancer_share
+            
+            c["status"] = "cancelled"
+            write_json("contracts.json", contracts)
+            
+            # Notify Both
+            create_notification(c["client_id"], "Project Cancelled", f"Refund of ₹{refund_amount} processed.", "proposal", c["id"])
+            create_notification(c["freelancer_id"], "Project Cancelled", f"Payout of ₹{freelancer_share} for completed milestones.", "proposal", c["id"])
+            
+            return {
+                "message": f"Contract cancelled. Payout: ₹{freelancer_share}, Refund: ₹{refund_amount}",
+                "freelancer_payout": freelancer_share,
+                "client_refund": refund_amount
+            }
     raise HTTPException(status_code=404, detail="Contract not found")
 
 @app.post("/escrow/release/{contract_id}")

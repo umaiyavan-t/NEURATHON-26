@@ -16,5 +16,50 @@
         "message": "Create a React dashboard using React.js ",
         "id": "prop_user_freelancer_2_job_2",
         "status": "pending"
+    },
+    {
+        "job_id": "job_build_an_website_for_my_cafe",
+        "freelancer_id": "user_freelancer_2",
+        "price": 10000.0,
+        "timeline": "3 days",
+        "message": "ooooooo",
+        "id": "prop_user_freelancer_2_job_build_an_website_for_my_cafe",
+        "status": "pending"
+    },
+    {
+        "job_id": "job_build_an_website_for_my_school",
+        "freelancer_id": "user_freelancer_2",
+        "price": 4000.0,
+        "timeline": "3 days",
+        "message": "oooo",
+        "id": "prop_user_freelancer_2_job_build_an_website_for_my_school",
+        "status": "pending"
+    },
+    {
+        "job_id": "job_new_website",
+        "freelancer_id": "user_freelancer_1",
+        "price": 4500.0,
+        "timeline": "4 hours",
+        "message": "create a full stack website ",
+        "id": "prop_user_freelancer_1_job_new_website",
+        "status": "pending"
+    },
+    {
+        "job_id": "job_3",
+        "freelancer_id": "user_freelancer_1",
+        "price": 18888.0,
+        "timeline": "2.5days",
+        "message": "i can build full graphic design without any disrupts ",
+        "id": "prop_user_freelancer_1_job_3",
+        "status": "pending"
+    },
+    {
+        "job_id": "job_new_website_1770727174",
+        "freelancer_id": "user_freelancer_1",
+        "price": 18888.0,
+        "timeline": "2.5days",
+        "message": "i can build full graphic design without any disrupts ",
+        "id": "prop_user_freelancer_1_job_new_website_1770727174",
+        "status": "pending"
     }
 ]
